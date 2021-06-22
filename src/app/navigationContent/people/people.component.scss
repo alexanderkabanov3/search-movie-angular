@@ -1,0 +1,151 @@
+.all {
+  min-height: calc(100vh - 100px);
+}
+
+.people {
+  min-height: calc(100vh - 100px);
+
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 0.5rem;
+  padding: 1rem 0;
+
+  &__card {
+    max-width: 15rem;
+    padding: 0.5rem;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+    cursor: pointer;
+  }
+
+  &__name {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    padding-top: 0.5rem;
+    text-transform: uppercase;
+  }
+
+  &__poster {
+    max-width: 14rem;
+
+    min-height: 21rem;
+  }
+
+  &__known {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 500;
+    padding-top: 0.5rem;
+    font-size: 0.9rem;
+    color: rgb(168, 168, 168);
+    display: block;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 100%;
+    text-overflow: ellipsis;
+  }
+
+  &__btn {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    background-color: #c6232d;
+    color: white;
+    cursor: pointer;
+    font-size: 2rem;
+    width: 100%;
+    outline: none;
+    border: none;
+    margin: 1rem 0;
+    padding: 0.2rem 0;
+    border-radius: 10px;
+  }
+}
+
+@media screen and (max-width: 1295px) {
+  .people {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+  }
+}
+
+@media screen and (max-width: 1050px) {
+  .people {
+    &__card {
+      max-width: 14rem;
+      justify-self: center;
+    }
+
+    &__poster {
+      max-width: 13rem;
+      min-height: 19rem;
+    }
+  }
+}
+
+@media screen and (max-width: 490px) {
+  .people {
+    &__card {
+      max-width: 13rem;
+      justify-self: center;
+    }
+
+    &__poster {
+      max-width: 12rem;
+      min-height: 18rem;
+    }
+  }
+}
+
+@media screen and (max-width: 455px) {
+  .people {
+    &__card {
+      max-width: 11rem;
+      justify-self: center;
+    }
+
+    &__poster {
+      max-width: 10rem;
+      min-height: 15rem;
+    }
+  }
+}
+
+@media screen and (max-width: 395px) {
+  .people {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+
+    &__card {
+      max-width: 18rem;
+      justify-self: center;
+    }
+
+    &__poster {
+      max-width: 17rem;
+    }
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .people {
+    &__card {
+      max-width: 16rem;
+      justify-self: center;
+    }
+
+    &__poster {
+      max-width: 15rem;
+    }
+  }
+}
+
+@media screen and (max-width: 300px) {
+  .people {
+    &__card {
+      max-width: 15rem;
+      justify-self: center;
+    }
+
+    &__poster {
+      max-width: 14rem;
+    }
+  }
+}

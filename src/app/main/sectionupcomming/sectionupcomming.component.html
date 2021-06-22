@@ -1,0 +1,44 @@
+<section
+  class="upcoming"
+  id="upcoming"
+  [ngStyle]="{'background-image': 'url(' + bgImgPath + ')'}"
+>
+  <div class="container upcoming__container">
+    <h2 class="headingh2 headingh2--up">upcoming</h2>
+    <div class="upcoming__content">
+      <div
+        class="upcoming__item"
+        *ngFor="let item of trailerArr"
+        id="{{ item.id }}"
+      >
+        <div class="upcoming__preview" (click)="open(item.id)">
+          <img
+            class="upcoming__poster"
+            src="https://img.youtube.com/vi/{{
+              item.videos.results[0].key
+            }}/mqdefault.jpg"
+            loading="lazy"
+          />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="ionicon play"
+            viewBox="0 0 512 512"
+          >
+            <title>Play</title>
+            <path
+              d="M133 440a35.37 35.37 0 01-17.5-4.67c-12-6.8-19.46-20-19.46-34.33V111c0-14.37 7.46-27.53 19.46-34.33a35.13 35.13 0 0135.77.45l247.85 148.36a36 36 0 010 61l-247.89 148.4A35.5 35.5 0 01133 440z"
+            />
+          </svg>
+        </div>
+        <span
+          class="title__movie title__movie--upcoming"
+          [routerLink]="['/movieoverview', item.id]"
+        >
+          {{ item.title }}
+        </span>
+        <div class="upcoming__date">{{ item.release_date | date }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-trailer *ngIf="modal" [@item]></app-trailer>

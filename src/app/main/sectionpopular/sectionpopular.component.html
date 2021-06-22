@@ -1,0 +1,98 @@
+<section class="popular" id="popular">
+  <div class="container">
+    <div class="popular__head">
+      <h2 class="headingh2">Popular</h2>
+      <div class="popular__select" (click)="switchBtn($event)">
+        <div class="popular__btn popular__btn--focus">on cinema</div>
+        <div class="popular__btn">on TV</div>
+      </div>
+    </div>
+    <div class="popular__content" *ngIf="onTvFlag; else tv" [@item]>
+      <div
+        class="popular__item"
+        *ngFor="let item of movArr"
+        id="{{ item.id }}"
+        [routerLink]="['/movieoverview', item.id]"
+      >
+        <img
+          class="popular__poster popular__poster--movie"
+          src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+            item.poster_path
+          }}"
+          srcset="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+            item.poster_path
+          }} 1x, https://www.themoviedb.org/t/p/w440_and_h660_face{{
+            item.poster_path
+          }} 2x"
+          loading="lazy"
+        />
+        <div
+          align="center"
+          style="margin-top: 10%"
+          class="progressBar progressBar--popular"
+        >
+          <circle-progress
+            [percent]="item.vote_average * 10"
+            [space]="-10"
+            [radius]="barValue"
+            [outerStrokeWidth]="outerStrokeWidth"
+            [innerStrokeWidth]="0"
+            [outerStrokeColor]="'#c6232d'"
+            [innerStrokeColor]="'#fff'"
+            [animation]="true"
+            [animationDuration]="2000"
+            [titleFontSize]="titleFontSize"
+            [backgroundPadding]="1"
+            [unitsFontSize]="unitsFontSize"
+            [titleFontWeight]="'800'"
+          ></circle-progress>
+        </div>
+        <span class="title__movie">{{ item.title }}</span>
+        <div class="popular__release">{{ item.release_date | date }}</div>
+      </div>
+    </div>
+    <ng-template #tv>
+      <div class="popular__content" [@item]>
+        <div
+          class="popular__item"
+          *ngFor="let element of serArr"
+          id="{{ element.id }}"
+          [routerLink]="['/seriesoverview', element.id]"
+        >
+          <img
+            class="popular__poster popular__poster--movie"
+            src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+              element.poster_path
+            }}"
+            loading="lazy"
+          />
+          <div
+            align="center"
+            style="margin-top: 10%"
+            class="progressBar progressBar--popular"
+          >
+            <circle-progress
+              [percent]="element.vote_average * 10"
+              [space]="-10"
+              [radius]="barValue"
+              [outerStrokeWidth]="outerStrokeWidth"
+              [innerStrokeWidth]="0"
+              [outerStrokeColor]="'#c6232d'"
+              [innerStrokeColor]="'#fff'"
+              [animation]="true"
+              [animationDuration]="2000"
+              [titleFontSize]="titleFontSize"
+              [backgroundPadding]="1"
+              [unitsFontSize]="unitsFontSize"
+              [titleFontWeight]="'800'"
+            ></circle-progress>
+          </div>
+          <span class="title__movie">{{ element.name }}</span>
+          <div class="popular__release">
+            {{ element.first_air_date | date }}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</section>

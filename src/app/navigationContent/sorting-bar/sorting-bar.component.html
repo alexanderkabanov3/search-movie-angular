@@ -1,0 +1,33 @@
+<div class="sortingBar">
+  <p class="sortingBar__heading">Sort results by</p>
+  <select
+    name="sort"
+    id="sort"
+    class="sortingBar__options"
+    (change)="selectOption($event)"
+    #sorting
+  >
+    <option value="popularity.desc" selected #sortOption>
+      Popularity descending
+    </option>
+    <option value="popularity.asc">Popularity ascending</option>
+    <option value="release_date.desc">Release date descending</option>
+    <option value="release_date.asc">Release date ascending</option>
+    <option value="vote_average.desc">Raiting descending</option>
+    <option value="vote_average.asc">Raiting ascending</option>
+  </select>
+  <hr />
+  <p class="sortingBar__heading">Genres</p>
+  <div class="sortingBar__genresBlock" (click)="select($event)">
+    <p
+      class="sortingBar__genre"
+      *ngFor="let item of genreArr"
+      id="{{ item.id }}"
+    >
+      {{ item.name }}
+    </p>
+  </div>
+  <button class="sortingBar__btn" [disabled]="btnDisabled" (click)="sendData()">
+    Search
+  </button>
+</div>

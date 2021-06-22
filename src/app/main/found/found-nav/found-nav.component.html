@@ -1,0 +1,32 @@
+<div class="found__nav" (click)="selectType($event)">
+  <div
+    class="found__tab found__tab--active"
+    [routerLink]="['/found', 'movies', 'page', 1]"
+    (click)="chooseMovie()"
+    [ngClass]="{'found__tab--active': moiveFlag}"
+  >
+    movies<span class="found__movieCount">{{
+      findService.movieArr.length
+    }}</span>
+  </div>
+  <div
+    class="found__tab"
+    [routerLink]="['/found', 'series', 'page', 1]"
+    (click)="chooseSeries()"
+    [ngClass]="{'found__tab--active': seriesFlag}"
+  >
+    series<span class="found__seriesCount">{{
+      findService.seriesArr.length
+    }}</span>
+  </div>
+  <div
+    class="found__tab"
+    [routerLink]="['/found', 'people', 'page', 1]"
+    (click)="choosePeople()"
+    [ngClass]="{'found__tab--active': peopleFlag}"
+  >
+    persons<span class="found__personCount">{{
+      findService.peopleArr.length
+    }}</span>
+  </div>
+</div>

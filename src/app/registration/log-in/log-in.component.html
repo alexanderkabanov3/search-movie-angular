@@ -1,0 +1,38 @@
+<form class="container signUp" [formGroup]="form">
+  <div class="signUp__block">
+    <div class="signUp__label">Username</div>
+    <input
+      class="signUp__input"
+      type="text"
+      [(ngModel)]="userName"
+      formControlName="username"
+    />
+    <p
+      class="signUp__empty"
+      *ngIf="form.get('username').invalid && form.get('username').touched"
+    >
+      username must have at least 6 characters
+    </p>
+  </div>
+  <div class="signUp__block">
+    <div class="signUp__label">Password</div>
+    <input
+      class="signUp__input"
+      type="password"
+      [(ngModel)]="password"
+      formControlName="password"
+    />
+    <p
+      class="signUp__empty"
+      *ngIf="form.get('password').invalid && form.get('password').touched"
+    >
+      password must have at least 6 characters
+    </p>
+  </div>
+  <button class="signUp__btn" (click)="submit()" [disabled]="form.invalid">
+    Log In
+  </button>
+  <p style="padding-top: 0.5em; font-size: 13px; align-self: flex-start">
+    *It's a test section, which doesn't bind with any database
+  </p>
+</form>

@@ -1,0 +1,238 @@
+<header class="header">
+  <div class="container header__cont">
+    <img
+      src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0ZW0iIGhlaWdodD0iNGVtIiB2aWV3Qm94PSIwIDAgMTkyLjc1NiAxOTIuNzQxIj48cGF0aCBkPSJNMCAxOTIuNzQxaDE5Mi43NTZWMEgwdjE5Mi43NDF6Ii8+PHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGZpbGw9IiNjNjIzMmQiIGQ9Ik0xMTQuNDc1IDU5LjIxSDk1LjY5NnY3NC4zMzZoNDQuOTM5di0yMi4xOTloLTI2LjE2VjU5LjIxeiIvPjxwYXRoIGZpbGw9IiNjNjIzMmQiIGQ9Ik0xNDkuNTE0IDEzMy41NDZoMjIuNTU2VjU5LjIxaC0yMi41NTZ2NzQuMzM2eiIvPjxwYXRoIGQ9Ik0zNi41NCAxMzMuNTQ2bDQuMDgtNy45NzloMjUuMDE5bDQuMDggNy45NzloMjAuMzM4TDUzLjQ1OSA1OS4yMWwtMzcuMjU4IDc0LjMzNkgzNi41NHptMjQuMjM4LTIyLjE5OUg0NS41OTlsNy41LTE1LjA1OSA3LjY3OSAxNS4wNTl6IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGNsaXAtcnVsZT0iZXZlbm9kZCIgZmlsbD0iI2M2MjMyZCIvPjwvc3ZnPg=="
+      alt="logo"
+      class="header__logo"
+      routerLink="/"
+    />
+    <nav class="header__nav">
+      <div class="dropdown">
+        <button class="dropbtn">movies</button>
+        <div class="dropdown-content">
+          <a [routerLink]="['/movie', 'popular']">popular</a>
+          <a [routerLink]="['/movie', 'playing']">now playing</a>
+          <a [routerLink]="['/movie', 'upcoming']">upcoming</a>
+          <a [routerLink]="['/movie', 'rated']">top rated</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn">tv shows</button>
+        <div class="dropdown-content">
+          <a [routerLink]="['/series', 'popular']">popular</a>
+          <a [routerLink]="['/series', 'airing']">aiiring today</a>
+          <a [routerLink]="['/series', 'tv']">on tv</a>
+          <a [routerLink]="['/series', 'rated']">top rated</a>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button class="dropbtn" [routerLink]="['/people']">people</button>
+      </div>
+    </nav>
+    <div class="dropdown" *ngIf="checkedIn">
+      <button class="dropbtn header__favorite">
+        <img
+          src="assets/img/header/favoriteMoviesLogo0.png"
+          alt="favoriteLogo"
+          class="header__favoriteLogo"
+        />
+        <div class="header__favoriteText">Favorite movies</div>
+      </button>
+      <div class="dropdown-content dropdown-content--favorite">
+        <app-favorite></app-favorite>
+      </div>
+    </div>
+    <div class="header__userName" *ngIf="checkedIn">{{ userName }}</div>
+    <div class="header__enter">
+      <div
+        class="header__enterItem"
+        *ngIf="!checkedIn"
+        [routerLink]="['/login']"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="ionicon header__enterIcon"
+          viewBox="0 0 512 512"
+        >
+          <title>Log In</title>
+          <path
+            d="M192 176v-40a40 40 0 0140-40h160a40 40 0 0140 40v240a40 40 0 01-40 40H240c-22.09 0-48-17.91-48-40v-40"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="32"
+          />
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="32"
+            d="M288 336l80-80-80-80M80 256h272"
+          />
+        </svg>
+        <p class="header__enterText">Log In</p>
+      </div>
+      <div
+        class="header__enterItem"
+        *ngIf="!checkedIn"
+        [routerLink]="['/signup']"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="ionicon header__enterIcon"
+          viewBox="0 0 512 512"
+        >
+          <title>Person Add</title>
+          <path
+            d="M376 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="32"
+          />
+          <path
+            d="M288 304c-87 0-175.3 48-191.64 138.6-2 10.92 4.21 21.4 15.65 21.4H464c11.44 0 17.62-10.48 15.65-21.4C463.3 352 375 304 288 304z"
+            fill="none"
+            stroke="currentColor"
+            stroke-miterlimit="10"
+            stroke-width="32"
+          />
+          <path
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="32"
+            d="M88 176v112M144 232H32"
+          />
+        </svg>
+        <p class="header__enterText">Sign Up</p>
+      </div>
+      <div class="header__enterItem" *ngIf="checkedIn" (click)="logOut()">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="ionicon header__enterIcon"
+          viewBox="0 0 512 512"
+        >
+          <title>Log Out</title>
+          <path
+            d="M304 336v40a40 40 0 01-40 40H104a40 40 0 01-40-40V136a40 40 0 0140-40h152c22.09 0 48 17.91 48 40v40M368 336l80-80-80-80M176 256h256"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="32"
+          />
+        </svg>
+        <p class="header__enterText">Log Out</p>
+      </div>
+    </div>
+    <div id="menu-header" class="flex" (click)="burger_click()" #menuHeader>
+      <div class="menu"></div>
+      <div class="menu"></div>
+      <div class="menu"></div>
+    </div>
+
+    <div id="burger-content" class="flex" #burgerContent>
+      <div *ngIf="checkedIn">
+        <div class="burger__enter">
+          <a class="header__userName">{{ userName }}</a>
+          <a class="header__enterItem">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="ionicon header__enterIcon header__enterIcon--burger"
+              viewBox="0 0 512 512"
+              (click)="logOut()"
+            >
+              <title>Log Out</title>
+              <path
+                d="M304 336v40a40 40 0 01-40 40H104a40 40 0 01-40-40V136a40 40 0 0140-40h152c22.09 0 48 17.91 48 40v40M368 336l80-80-80-80M176 256h256"
+                fill="none"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="32"
+              />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="burger__enter">
+        <div
+          class="header__enterItem"
+          *ngIf="!checkedIn"
+          [routerLink]="['/login']"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="ionicon header__enterIcon"
+            viewBox="0 0 512 512"
+          >
+            <title>Log In</title>
+            <path
+              d="M192 176v-40a40 40 0 0140-40h160a40 40 0 0140 40v240a40 40 0 01-40 40H240c-22.09 0-48-17.91-48-40v-40"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="32"
+            />
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="32"
+              d="M288 336l80-80-80-80M80 256h272"
+            />
+          </svg>
+          <p class="header__enterText">Log In</p>
+        </div>
+        <div
+          class="header__enterItem"
+          *ngIf="!checkedIn"
+          [routerLink]="['/signup']"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="ionicon header__enterIcon"
+            viewBox="0 0 512 512"
+          >
+            <title>Person Add</title>
+            <path
+              d="M376 144c-3.92 52.87-44 96-88 96s-84.15-43.12-88-96c-4-55 35-96 88-96s92 42 88 96z"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="32"
+            />
+            <path
+              d="M288 304c-87 0-175.3 48-191.64 138.6-2 10.92 4.21 21.4 15.65 21.4H464c11.44 0 17.62-10.48 15.65-21.4C463.3 352 375 304 288 304z"
+              fill="none"
+              stroke="currentColor"
+              stroke-miterlimit="10"
+              stroke-width="32"
+            />
+            <path
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="32"
+              d="M88 176v112M144 232H32"
+            />
+          </svg>
+          <p class="header__enterText">Sign Up</p>
+        </div>
+      </div>
+      <hr />
+      <a [routerLink]="['/movie', 'popular']">movies</a>
+      <a [routerLink]="['/series', 'popular']">tv shows</a>
+      <a [routerLink]="['/people']">people</a>
+    </div>
+  </div>
+</header>

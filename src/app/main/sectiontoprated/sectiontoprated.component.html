@@ -1,0 +1,49 @@
+<section class="topRaited" id="toprated">
+  <div class="container topRaited__container">
+    <h2 class="headingh2">top rated</h2>
+    <div class="topRaited__content">
+      <div
+        class="topRaited__item"
+        *ngFor="let item of ratedArr"
+        id="{{ item.id }}"
+        [routerLink]="['/movieoverview', item.id]"
+      >
+        <img
+          class="topRaited__poster"
+          src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+            item.poster_path
+          }}"
+          srcset="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+            item.poster_path
+          }} 1x, https://www.themoviedb.org/t/p/w440_and_h660_face{{
+            item.poster_path
+          }} 2x"
+          loading="lazy"
+        />
+        <span class="title__movie">{{ item.title }}</span>
+        <div class="topRaited__release">{{ item.release_date | date }}</div>
+        <div
+          align="center"
+          style="margin-top: 10%"
+          class="progressBar progressBar--raited"
+        >
+          <circle-progress
+            [percent]="item.vote_average * 10"
+            [space]="-10"
+            [radius]="barValue"
+            [outerStrokeWidth]="outerStrokeWidth"
+            [innerStrokeWidth]="0"
+            [outerStrokeColor]="'#c6232d'"
+            [innerStrokeColor]="'#fff'"
+            [animation]="true"
+            [animationDuration]="2000"
+            [titleFontSize]="titleFontSize"
+            [backgroundPadding]="1"
+            [unitsFontSize]="unitsFontSize"
+            [titleFontWeight]="'800'"
+          ></circle-progress>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

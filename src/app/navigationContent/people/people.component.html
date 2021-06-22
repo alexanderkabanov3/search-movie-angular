@@ -1,0 +1,45 @@
+<div class="container all">
+  <div class="loader" *ngIf="preLoader; else content">
+    <div class="dash uno"></div>
+    <div class="dash dos"></div>
+    <div class="dash tres"></div>
+    <div class="dash cuatro"></div>
+  </div>
+  <ng-template #content>
+    <div class="people">
+      <div
+        class="people__card"
+        *ngFor="let item of resArr; index as i"
+        id="{{ item.id }}"
+        [routerLink]="['/personoverview', item.id]"
+        [@item]
+      >
+        <img
+          *ngIf="item.profile_path !== null; else alter"
+          class="people__poster"
+          loading="lazy"
+          src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+            item.profile_path
+          }}"
+          srcset="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+            item.profile_path
+          }} 1x, https://www.themoviedb.org/t/p/w440_and_h660_face{{
+            item.profile_path
+          }} 2x"
+        />
+        <ng-template #alter>
+          <img
+            class="people__poster"
+            loading="lazy"
+            src="https://st.depositphotos.com/2251265/2417/i/600/depositphotos_24176415-stock-photo-blank-poster-on-a-wood.jpg"
+          />
+        </ng-template>
+        <p class="people__name">{{ item.name }}</p>
+        <p class="people__known">
+          {{ knownArr[i] }}
+        </p>
+      </div>
+    </div>
+    <button class="people__btn" (click)="load()" *ngIf="btn">Load More</button>
+  </ng-template>
+</div>

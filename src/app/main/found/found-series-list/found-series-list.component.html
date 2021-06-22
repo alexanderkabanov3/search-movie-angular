@@ -1,0 +1,21 @@
+<div *ngIf="contentExist; else content" class="found__not">no results</div>
+<ng-template #content>
+  <div class="found__content found__content--series">
+    <router-outlet></router-outlet>
+    <div
+      class="found__pagesSeries"
+      (click)="switchPage($event)"
+      *ngIf="pagesExist"
+      #pageItem
+    >
+      <div
+        class="found__pageItemSeries"
+        *ngFor="let index of quantityPages"
+        [routerLink]="['/found', 'series', 'page', index + 1]"
+        [ngClass]="{'found__pagesSeries--active': index + 1 === pageMatch}"
+      >
+        {{ index + 1 }}
+      </div>
+    </div>
+  </div>
+</ng-template>

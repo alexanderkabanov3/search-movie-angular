@@ -1,0 +1,141 @@
+.topRaited {
+  padding: 2rem;
+  min-height: calc(100vh - 100px);
+
+  &__container {
+    padding: 0;
+  }
+
+  &__content {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+
+    padding: 1.2rem 0;
+  }
+
+  &__item {
+    margin: 0.3rem;
+    max-width: 8rem;
+    justify-self: center;
+
+    position: relative;
+  }
+
+  &__poster {
+    max-width: 8rem;
+    transition: 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+      transition: 0.3s ease;
+    }
+  }
+
+  &__title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    padding-top: 0.5rem;
+    transition: 0.3s ease;
+
+    &:hover {
+      color: #c6232d;
+      transition: 0.3s ease;
+    }
+  }
+
+  &__release {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    font-size: 0.8rem;
+    padding-top: 0.5rem;
+  }
+}
+
+.title__movie {
+  font-size: 1rem;
+}
+
+@media screen and (max-width: 1415px) {
+  .topRaited {
+    &__content {
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+    }
+
+    &__item {
+      max-width: 13rem;
+    }
+
+    &__poster {
+      max-width: 12rem;
+    }
+  }
+}
+
+@media screen and (max-width: 1060px) {
+  .topRaited {
+    &__item {
+      max-width: 11rem;
+    }
+
+    &__poster {
+      max-width: 11rem;
+    }
+  }
+}
+
+@media screen and (max-width: 520px) {
+  .topRaited {
+    &__content {
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+    }
+
+    &__item {
+      max-width: 20rem;
+    }
+
+    &__poster {
+      max-width: 20rem;
+    }
+
+    &__release {
+      font-size: 1.2rem;
+    }
+  }
+
+  .title__movie {
+    font-size: 1.6rem;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .topRaited {
+    &__poster {
+      max-width: 17rem;
+    }
+
+    &__item {
+      max-width: 17rem;
+    }
+  }
+}
+
+@media screen and (max-width: 310px) {
+  .topRaited {
+    &__content {
+      grid-template-columns: repeat(1, 1fr);
+      grid-template-rows: repeat(20, 1fr);
+    }
+    &__poster {
+      max-width: 20rem;
+    }
+
+    &__item {
+      max-width: 20rem;
+    }
+  }
+}

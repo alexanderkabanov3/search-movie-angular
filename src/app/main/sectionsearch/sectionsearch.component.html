@@ -1,0 +1,23 @@
+<section
+  class="search"
+  [ngStyle]="{'background-image': 'url(' + bgImgPath + ')'}"
+  [@item]
+>
+  <h1 class="search__heading animate__animated animate__bounceInRight">
+    Welcome to <span>ALI</span>
+  </h1>
+  <p class="search__slogan animate__animated animate__bounceInRight">
+    Find a movie for a good rest!
+  </p>
+  <div class="search__area animate__animated animate__bounceInLeft">
+    <input
+      type="text"
+      id="input"
+      class="search__input"
+      placeholder="Search for..."
+      [(ngModel)]="findValue"
+      (keyup.enter)="find()"
+    />
+    <button id="btn" class="search__button" (click)="find()">Search</button>
+  </div>
+</section>

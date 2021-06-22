@@ -1,0 +1,116 @@
+.popular {
+  padding: 2rem 0;
+
+  &__content {
+    overflow-x: scroll;
+    min-height: 20rem;
+    display: flex;
+  }
+
+  &__poster {
+    max-width: 8rem;
+    transition: 0.3s ease;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  &__item {
+    margin: 0.3rem;
+    max-width: 8rem;
+
+    position: relative;
+  }
+
+  &__head {
+    display: flex;
+    align-items: center;
+
+    padding-bottom: 1rem;
+  }
+
+  &__select {
+    display: flex;
+
+    border: 3px solid #c6232d;
+    border-radius: 2rem;
+    margin-left: 1rem;
+  }
+
+  &__btn {
+    padding: 0.3rem;
+    cursor: pointer;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: #000;
+    transition: 0.3s ease;
+    border-radius: 2rem;
+
+    &:hover {
+      opacity: 0.8;
+      transition: 0.3s ease;
+    }
+
+    &--focus {
+      background-color: #c6232d;
+      color: #fff;
+    }
+  }
+
+  &__release {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    font-size: 0.8rem;
+    padding-top: 0.5rem;
+  }
+}
+
+@media screen and (max-width: 790px) {
+  .popular {
+    &__poster {
+      max-width: 11rem;
+    }
+
+    &__item {
+      max-width: 11rem;
+    }
+
+    &__release {
+      font-size: 1.2rem;
+    }
+  }
+  .progressBar--popular {
+    top: 50%;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .popular {
+    &__poster {
+      max-width: 13rem;
+    }
+
+    &__item {
+      max-width: 13rem;
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .popular {
+    &__poster {
+      max-width: 11rem;
+    }
+
+    &__item {
+      max-width: 11rem;
+    }
+  }
+  .progressBar--popular {
+    top: 57%;
+  }
+}

@@ -1,0 +1,129 @@
+<div *ngIf="movieFlag; else other">
+  <div
+    class="found__item"
+    *ngFor="let item of itemArr"
+    id="{{ item.id }}"
+    [routerLink]="['/movieoverview', item.id]"
+    [@item]
+  >
+    <img
+      class="found__poster"
+      loading="lazy"
+      src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+        item.poster_path
+      }}"
+      srcset="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+        item.poster_path
+      }} 1x, https://www.themoviedb.org/t/p/w440_and_h660_face{{
+        item.poster_path
+      }} 2x"
+      *ngIf="item.poster_path !== null; else alter"
+    />
+    <ng-template #alter>
+      <img
+        class="found__poster"
+        loading="lazy"
+        src="https://st.depositphotos.com/2251265/2417/i/600/depositphotos_24176415-stock-photo-blank-poster-on-a-wood.jpg"
+      />
+    </ng-template>
+    <div class="found__right">
+      <p class="found__title title__movie">
+        {{ item.title }}
+      </p>
+      <div class="found__release">
+        {{ item.release_date | date }}
+      </div>
+      <div class="found__text">
+        {{ item.overview }}
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #other>
+  <div *ngIf="seriesFlag; else people">
+    <div
+      class="found__item"
+      *ngFor="let item of itemArr"
+      id="{{ item.id }}"
+      [routerLink]="['/seriesoverview', item.id]"
+      [@item]
+    >
+      <img
+        class="found__poster"
+        loading="lazy"
+        src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+          item.poster_path
+        }}"
+        srcset="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+          item.poster_path
+        }} 1x, https://www.themoviedb.org/t/p/w440_and_h660_face{{
+          item.poster_path
+        }} 2x"
+        *ngIf="item.poster_path !== null; else alter"
+      />
+      <ng-template #alter>
+        <img
+          class="found__poster"
+          loading="lazy"
+          src="https://st.depositphotos.com/2251265/2417/i/600/depositphotos_24176415-stock-photo-blank-poster-on-a-wood.jpg"
+        />
+      </ng-template>
+      <div class="found__right">
+        <p class="found__title title__movie">
+          {{ item.name }}
+        </p>
+
+        <div class="found__release">
+          {{ item.first_air_date | date }}
+        </div>
+
+        <div class="found__text">
+          {{ item.overview }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #people>
+    <div
+      class="found__item"
+      *ngFor="let item of itemArr; index as i"
+      id="{{ item.id }}"
+      [routerLink]="['/personoverview', item.id]"
+      [@item]
+    >
+      <img
+        class="found__poster"
+        loading="lazy"
+        src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+          item.profile_path
+        }}"
+        srcset="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+          item.profile_path
+        }} 1x, https://www.themoviedb.org/t/p/w440_and_h660_face{{
+          item.profile_path
+        }} 2x"
+        *ngIf="item.profile_path !== null; else alter"
+      />
+      <ng-template #alter>
+        <img
+          class="found__poster"
+          loading="lazy"
+          src="https://st.depositphotos.com/2251265/2417/i/600/depositphotos_24176415-stock-photo-blank-poster-on-a-wood.jpg"
+        />
+      </ng-template>
+      <div class="found__right">
+        <p class="found__title title__movie">
+          {{ item.name }}
+        </p>
+        <div class="found__text found__text--person">
+          {{ item.known_for_department }}
+        </div>
+        <div class="found__knownFor">
+          <p class="found__knownForItem">
+            {{ knownArr[i] }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</ng-template>

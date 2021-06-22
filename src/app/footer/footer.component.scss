@@ -1,0 +1,50 @@
+.footer {
+  background-color: #000;
+  text-align: center;
+
+  height: 6rem;
+
+  &__contacts {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__logo {
+    margin-right: 1rem;
+    width: 4rem;
+  }
+
+  &__icon {
+    padding: 0.2rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: #fff;
+    cursor: pointer;
+    transition: 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+      transition: 0.3s ease;
+    }
+  }
+
+  &__database {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__text {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: #fff;
+    text-transform: uppercase;
+    margin-right: 1rem;
+  }
+
+  &__img {
+    width: 7rem;
+  }
+}

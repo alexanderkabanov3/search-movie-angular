@@ -1,0 +1,67 @@
+<div class="loader" *ngIf="preLoader; else content">
+  <div class="dash uno"></div>
+  <div class="dash dos"></div>
+  <div class="dash tres"></div>
+  <div class="dash cuatro"></div>
+</div>
+<ng-template #content>
+  <div class="media__content" *ngIf="!noResults; else noresults">
+    <div
+      class="media__card"
+      id="{{ item.id }}"
+      *ngFor="let item of moviesArr"
+      [routerLink]="['/movieoverview', item.id]"
+      [@item]
+    >
+      <img
+        *ngIf="item.poster_path !== null; else alter"
+        class="media__poster"
+        loading="lazy"
+        src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+          item.poster_path
+        }}"
+        srcset="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+          item.poster_path
+        }} 1x, https://www.themoviedb.org/t/p/w440_and_h660_face{{
+          item.poster_path
+        }} 2x"
+      />
+      <ng-template #alter>
+        <img
+          class="media__poster"
+          loading="lazy"
+          src="https://st.depositphotos.com/2251265/2417/i/600/depositphotos_24176415-stock-photo-blank-poster-on-a-wood.jpg"
+        />
+      </ng-template>
+      <p class="media__title">{{ item.title }}</p>
+      <div
+        align="center"
+        style="margin-top: 10%"
+        class="progressBar progressBar--media progressBar--media--movTrend"
+      >
+        <circle-progress
+          [percent]="item.vote_average * 10"
+          [space]="-10"
+          [radius]="barValue"
+          [outerStrokeWidth]="outerStrokeWidth"
+          [innerStrokeWidth]="0"
+          [outerStrokeColor]="'#c6232d'"
+          [innerStrokeColor]="'#fff'"
+          [animation]="true"
+          [animationDuration]="2000"
+          [titleFontSize]="titleFontSize"
+          [backgroundPadding]="1"
+          [unitsFontSize]="unitsFontSize"
+          [titleFontWeight]="'800'"
+        ></circle-progress>
+      </div>
+      <p class="media__date">{{ item.release_date | date }}</p>
+    </div>
+  </div>
+  <ng-template #noresults>
+    <p class="found__not found__not--filt">No results</p>
+  </ng-template>
+  <button class="media__btn" (click)="load()" *ngIf="btnExist">
+    Load More
+  </button>
+</ng-template>

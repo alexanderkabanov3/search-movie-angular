@@ -1,0 +1,82 @@
+<div class="overview">
+  <div class="loader" *ngIf="preLoader; else mainContent">
+    <div class="dash uno"></div>
+    <div class="dash dos"></div>
+    <div class="dash tres"></div>
+    <div class="dash cuatro"></div>
+  </div>
+  <ng-template #mainContent>
+    <div class="overview__topPerson">
+      <div class="container overview__topBlock">
+        <img
+          *ngIf="item.profile_path !== null; else alter"
+          class="overview__poster"
+          loading="lazy"
+          src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+            item.profile_path
+          }}"
+          srcset="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+            item.profile_path
+          }} 1x, https://www.themoviedb.org/t/p/w440_and_h660_face{{
+            item.profile_path
+          }} 2x"
+          [@item]
+        />
+        <ng-template #alter>
+          <img
+            class="overview__poster"
+            loading="lazy"
+            src="https://st.depositphotos.com/2251265/2417/i/600/depositphotos_24176415-stock-photo-blank-poster-on-a-wood.jpg"
+          />
+        </ng-template>
+        <div class="overview__information">
+          <p class="overview__title overview__title--person">
+            {{ item.name }}
+          </p>
+          <p class="overview__known">{{ item.known_for_department }}</p>
+          <p class="overview__castTitle overview__castTitle--biography">
+            Biography
+          </p>
+          <p class="overview__biography">
+            {{ item.biography }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <p class="overview__castTitle overview__castTitle--biography">
+        Known for
+      </p>
+      <div class="overview__knownBlock">
+        <div
+          class="overview__person"
+          *ngFor="let e of known"
+          [routerLink]="
+            e.title ? ['/movieoverview', e.id] : ['/seriesoverview', e.id]
+          "
+          [@item]
+        >
+          <img
+            *ngIf="e.poster_path !== null; else alter"
+            class="overview__castPoster"
+            loading="lazy"
+            src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+              e.poster_path
+            }}"
+          />
+          <ng-template #alter>
+            <img
+              class="overview__castPoster"
+              loading="lazy"
+              src="https://st.depositphotos.com/2251265/2417/i/600/depositphotos_24176415-stock-photo-blank-poster-on-a-wood.jpg"
+            />
+          </ng-template>
+          <p class="overview__originalName">{{ e.title || e.name }}</p>
+          <p class="overview__originalName overview__originalName--character">
+            {{ e.release_date || e.first_air_date | date }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

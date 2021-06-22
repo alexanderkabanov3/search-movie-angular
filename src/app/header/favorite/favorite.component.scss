@@ -1,0 +1,53 @@
+.favorite {
+  &__card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    color: white;
+    font-size: 1.2em;
+    padding: 0.5em 0;
+  }
+  &__title {
+    cursor: pointer;
+    transition: 0.3s ease;
+    padding-left: 1em;
+
+    &:hover {
+      color: #c6232d;
+      transition: 0.3s ease;
+    }
+  }
+
+  &__favoriteContainer {
+    min-width: 40rem;
+    padding: 0.9rem;
+    max-height: 30rem;
+    overflow-y: scroll;
+    text-align: center;
+  }
+
+  &__favoriteEmpty {
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    color: #fff;
+    text-transform: uppercase;
+  }
+
+  &__left {
+    display: flex;
+    align-items: center;
+  }
+
+  &__poster {
+    max-width: 3em;
+  }
+
+  &__close {
+    color: white;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+}
