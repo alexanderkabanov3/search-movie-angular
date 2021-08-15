@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {MovieItem} from '../sectionpopular/sectionpopular.component';
+import {MediaItem, Results} from '../../interfaces/fetchingResults';
 import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
 
 @Component({
@@ -11,7 +11,7 @@ import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
 export class SectiontopratedComponent implements OnInit {
   private urlTopRatedMovies =
     'https://api.themoviedb.org/3/movie/top_rated?api_key=f4a143e6e64636aa4b0cd6bec7236ad4';
-  public ratedArr: MovieItem[] = [];
+  public ratedArr: MediaItem[] = [];
   public barValue = 25;
   public titleFontSize = '15';
   public outerStrokeWidth = 5;
@@ -23,14 +23,16 @@ export class SectiontopratedComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.ratedHttp.get(this.urlTopRatedMovies).subscribe((response: any) => {
-      this.ratedArr = response.results;
-    });
+    this.ratedHttp
+      .get(this.urlTopRatedMovies)
+      .subscribe((response: Results) => {
+        this.ratedArr = response.results;
+      });
 
     this.mediaQueries();
   }
 
-  mediaQueries() {
+  mediaQueries(): void {
     this.breakpointObserver
       .observe(['(max-width: 1024px)'])
       .subscribe((state: BreakpointState) => {

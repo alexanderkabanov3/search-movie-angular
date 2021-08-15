@@ -6,7 +6,7 @@ import {FoundMovieListComponent} from './found-movie-list/found-movie-list.compo
 import {FoundSeriesListComponent} from './found-series-list/found-series-list.component';
 import {FoundPeopleListComponent} from './found-people-list/found-people-list.component';
 import {RouterModule, Routes} from '@angular/router';
-import {MovieContentComponent} from './found-movie-list/movie-content/movie-content.component';
+import {MovieContentComponent} from './media-content/movie-content.component';
 
 const routes: Routes = [
   {

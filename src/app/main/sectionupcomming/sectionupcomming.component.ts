@@ -2,13 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Component, DoCheck, OnInit} from '@angular/core';
 import {TrailerService} from 'src/app/services/trailer.service';
 import {animate, style, transition, trigger} from '@angular/animations';
-
-export interface MovieItem {
-  title: string;
-  id: number;
-  release_date: string;
-  videos: any;
-}
+import {MediaItem, Results} from 'src/app/interfaces/fetchingResults';
 
 @Component({
   selector: 'app-sectionupcomming',
@@ -21,8 +15,8 @@ export interface MovieItem {
   ],
 })
 export class SectionupcommingComponent implements OnInit, DoCheck {
-  public bgImgPath = '';
-  public trailerArr: MovieItem[] = [];
+  public bgImgPath: string;
+  public trailerArr: MediaItem[] = [];
   private urlTrailers =
     'https://api.themoviedb.org/3/movie/upcoming?api_key=f4a143e6e64636aa4b0cd6bec7236ad4';
   private movieUrl =
@@ -41,19 +35,19 @@ export class SectionupcommingComponent implements OnInit, DoCheck {
     this.trailerService.seriesId = '';
     this.trailerService.open = false;
     // fetching background image
-    this.bgHttp.get(this.movieUrl).subscribe((response: any) => {
+    this.bgHttp.get(this.movieUrl).subscribe((response: Results) => {
       this.bgImgPath = `https://image.tmdb.org/t/p/original${
         response.results[this.randomInteger()].backdrop_path
       }`;
     });
     // fetching upcoming list
-    this.trailerHttp.get(this.urlTrailers).subscribe((response: any) => {
-      response.results.forEach((element: any) => {
+    this.trailerHttp.get(this.urlTrailers).subscribe((response: Results) => {
+      response.results.forEach((element: MediaItem) => {
         this.posterHttp
           .get(
             `https://api.themoviedb.org/3/movie/${element.id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&append_to_response=videos`
           )
-          .subscribe((response: any) => {
+          .subscribe((response: MediaItem) => {
             this.trailerArr.push(response);
           });
       });

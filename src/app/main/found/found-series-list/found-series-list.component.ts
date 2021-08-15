@@ -1,6 +1,5 @@
 import {
   Component,
-  DoCheck,
   ElementRef,
   OnDestroy,
   OnInit,
@@ -14,9 +13,8 @@ import {findValueService} from 'src/app/services/find-value.service';
   templateUrl: './found-series-list.component.html',
   styleUrls: ['./found-series-list.component.scss'],
 })
-export class FoundSeriesListComponent implements OnInit, DoCheck, OnDestroy {
+export class FoundSeriesListComponent implements OnInit, OnDestroy {
   public quantityPages = [];
-  public contentExist = true;
   public pagesExist = true;
   public pageMatch: number;
   public routerObservable;
@@ -25,9 +23,6 @@ export class FoundSeriesListComponent implements OnInit, DoCheck, OnDestroy {
   constructor(public findServise: findValueService, private router: Router) {}
 
   ngOnInit(): void {
-    if (this.findServise.seriesArr.length !== 0) {
-      this.contentExist = false;
-    }
     this.countPages();
     this.pageMatch = +window.location.pathname.match(/\d+/)[0];
 
@@ -49,8 +44,6 @@ export class FoundSeriesListComponent implements OnInit, DoCheck, OnDestroy {
       window.scrollTo(0, 0);
     });
   }
-
-  ngDoCheck() {}
 
   ngOnDestroy() {
     this.routerObservable.unsubscribe();

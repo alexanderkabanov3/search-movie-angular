@@ -19,6 +19,10 @@ a {
   text-decoration: none;
 }
 
+main {
+  min-height: calc(100vh - 100px);
+}
+
 ::-webkit-scrollbar {
   width: 0.6rem;
   height: 0.8rem;

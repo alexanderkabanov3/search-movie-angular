@@ -1,19 +1,11 @@
 <section class="found">
   <div class="container">
-    <div class="loader" *ngIf="preLoader; else mainContent">
-      <div class="dash uno"></div>
-      <div class="dash dos"></div>
-      <div class="dash tres"></div>
-      <div class="dash cuatro"></div>
+    <div *ngIf="notFound; else foundTrue">
+      <div class="found__not">Not found</div>
     </div>
-    <ng-template #mainContent>
-      <div *ngIf="notFound; else foundTrue">
-        <div class="found__not">Not found</div>
-      </div>
-      <ng-template #foundTrue>
-        <app-found-nav></app-found-nav>
-        <router-outlet></router-outlet>
-      </ng-template>
+    <ng-template #foundTrue>
+      <app-found-nav></app-found-nav>
+      <router-outlet></router-outlet>
     </ng-template>
   </div>
 </section>

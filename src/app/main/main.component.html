@@ -1,6 +1,14 @@
 <main>
-  <app-sectionsearch></app-sectionsearch>
-  <app-sectionpopular></app-sectionpopular>
-  <app-sectionupcomming></app-sectionupcomming>
-  <app-sectiontoprated></app-sectiontoprated>
+  <div class="loader" *ngIf="preLoader; else mainContent">
+    <div class="dash uno"></div>
+    <div class="dash dos"></div>
+    <div class="dash tres"></div>
+    <div class="dash cuatro"></div>
+  </div>
+  <ng-template #mainContent>
+    <app-sectionsearch></app-sectionsearch>
+    <app-sectionpopular></app-sectionpopular>
+    <app-sectionupcomming></app-sectionupcomming>
+    <app-sectiontoprated></app-sectiontoprated>
+  </ng-template>
 </main>

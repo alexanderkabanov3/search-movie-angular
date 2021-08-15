@@ -2,22 +2,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
-
-export interface MovieItem {
-  title: string;
-  id: number;
-  poster_path: string;
-  release_date: string;
-  vote_average: number;
-}
-
-export interface SeriesItem {
-  name: string;
-  id: number;
-  poster_path: string;
-  first_air_date: string;
-  vote_average: number;
-}
+import {Results, MediaItem} from 'src/app/interfaces/fetchingResults';
 
 @Component({
   selector: 'app-sectionpopular',
@@ -35,10 +20,8 @@ export class SectionpopularComponent implements OnInit {
     'https://api.themoviedb.org/3/movie/popular?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&page=1';
   private urlPopularTv =
     'https://api.themoviedb.org/3/tv/popular?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&page=1';
-  private movObj: any;
-  private serObj: any;
-  public movArr: MovieItem[] = [];
-  public serArr: SeriesItem[] = [];
+  public movArr: MediaItem[] = [];
+  public serArr: MediaItem[] = [];
   public barValue = 25;
   public titleFontSize = '15';
   public outerStrokeWidth = 5;
@@ -52,36 +35,32 @@ export class SectionpopularComponent implements OnInit {
 
   ngOnInit(): void {
     // fetching movie list
-    this.movieHttp.get(this.urlPopularMovies).subscribe((response) => {
-      this.movObj = response;
-      this.movArr = this.movObj.results;
+    this.movieHttp.get(this.urlPopularMovies).subscribe((response: Results) => {
+      this.movArr = response.results;
     });
 
     // fetching series list
-    this.sreiesHttp.get(this.urlPopularTv).subscribe((response) => {
-      this.serObj = response;
-      this.serArr = this.serObj.results;
+    this.sreiesHttp.get(this.urlPopularTv).subscribe((response: Results) => {
+      this.serArr = response.results;
     });
 
     this.mediaQueries();
   }
 
-  switchBtn(event: any) {
+  switchBtn(event: any): void {
     if (!event.target.classList.contains('popular__select')) {
       const childrenArr = event.target.parentNode.children;
       for (const element of childrenArr) {
         element.classList.remove('popular__btn--focus');
       }
       event.target.classList.add('popular__btn--focus');
-      if (event.target.innerText === 'ON TV') {
-        this.onTvFlag = false;
-      } else {
-        this.onTvFlag = true;
-      }
+      event.target.innerText === 'ON TV'
+        ? (this.onTvFlag = false)
+        : (this.onTvFlag = true);
     }
   }
 
-  mediaQueries() {
+  mediaQueries(): void {
     this.breakpointObserver
       .observe(['(max-width: 1024px)'])
       .subscribe((state: BreakpointState) => {

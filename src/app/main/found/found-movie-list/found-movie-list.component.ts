@@ -1,6 +1,5 @@
 import {
   Component,
-  DoCheck,
   ElementRef,
   OnDestroy,
   OnInit,
@@ -14,9 +13,8 @@ import {findValueService} from 'src/app/services/find-value.service';
   templateUrl: './found-movie-list.component.html',
   styleUrls: ['./found-movie-list.component.scss'],
 })
-export class FoundMovieListComponent implements OnInit, DoCheck, OnDestroy {
+export class FoundMovieListComponent implements OnInit, OnDestroy {
   public quantityPages = [];
-  public contentExist = true;
   public pagesExist = true;
   public pageMatch: number;
   public routerObservable;
@@ -25,9 +23,6 @@ export class FoundMovieListComponent implements OnInit, DoCheck, OnDestroy {
   constructor(public findServise: findValueService, private router: Router) {}
 
   ngOnInit(): void {
-    if (this.findServise.movieArr.length !== 0) {
-      this.contentExist = false;
-    }
     this.countPages();
     this.pageMatch = +window.location.pathname.match(/\d+/)[0];
 
@@ -45,8 +40,6 @@ export class FoundMovieListComponent implements OnInit, DoCheck, OnDestroy {
       window.scrollTo(0, 0);
     });
   }
-
-  ngDoCheck() {}
 
   ngOnDestroy() {
     this.routerObservable.unsubscribe();

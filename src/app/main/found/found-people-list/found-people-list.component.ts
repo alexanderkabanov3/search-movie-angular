@@ -16,7 +16,6 @@ import {findValueService} from 'src/app/services/find-value.service';
 })
 export class FoundPeopleListComponent implements OnInit, DoCheck, OnDestroy {
   public quantityPages = [];
-  public contentExist = true;
   public pagesExist = true;
   public pageMatch: number;
   public routerObservable;
@@ -25,9 +24,6 @@ export class FoundPeopleListComponent implements OnInit, DoCheck, OnDestroy {
   constructor(public findServise: findValueService, private router: Router) {}
 
   ngOnInit(): void {
-    if (this.findServise.peopleArr.length !== 0) {
-      this.contentExist = false;
-    }
     this.countPages();
     this.pageMatch = +window.location.pathname.match(/\d+/)[0];
 
