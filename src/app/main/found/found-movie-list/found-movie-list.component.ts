@@ -41,11 +41,11 @@ export class FoundMovieListComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.routerObservable.unsubscribe();
   }
 
-  countPages() {
+  countPages(): void {
     let pages = this.findServise.movieArr.length;
     pages = pages / 10;
     if (pages % 10 !== 0) {
@@ -61,7 +61,7 @@ export class FoundMovieListComponent implements OnInit, OnDestroy {
       .map((x, i) => i);
   }
 
-  switchPage(event: any) {
+  switchPage(event: any): void {
     if (!event.target.classList.contains('found__pagesMovie')) {
       const pagesList = event.target.parentNode.children;
       for (const item of pagesList) {

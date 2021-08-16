@@ -85,7 +85,11 @@
           <p class="overview__slogan">{{ item.tagline }}</p>
           <p class="overview__heading">Overview</p>
           <p class="overview__overview">{{ item.overview }}</p>
-          <button class="overview__button" (click)="addFavorite(item.id)">
+          <button
+            class="overview__button"
+            (click)="addFavorite(item.id)"
+            *ngIf="this.favoriteService.btnExist"
+          >
             add to favorite
           </button>
         </div>

@@ -60,12 +60,25 @@
           [routerLink]="['/seriesoverview', element.id]"
         >
           <img
+            *ngIf="element.poster_path !== null; else alter"
             class="popular__poster popular__poster--movie"
             src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
               element.poster_path
             }}"
+            srcset="https://www.themoviedb.org/t/p/w220_and_h330_face{{
+              element.poster_path
+            }} 1x, https://www.themoviedb.org/t/p/w440_and_h660_face{{
+              element.poster_path
+            }} 2x"
             loading="lazy"
           />
+          <ng-template #alter>
+            <img
+              class="popular__poster popular__poster--movie"
+              loading="lazy"
+              src="https://st.depositphotos.com/2251265/2417/i/600/depositphotos_24176415-stock-photo-blank-poster-on-a-wood.jpg"
+            />
+          </ng-template>
           <div
             align="center"
             style="margin-top: 10%"

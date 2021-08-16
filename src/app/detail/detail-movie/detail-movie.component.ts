@@ -37,7 +37,7 @@ export class DetailMovieComponent implements OnInit, DoCheck {
     private httpCredits: HttpClient,
     private router: ActivatedRoute,
     private trailerService: TrailerService,
-    private favoriteService: FavoriteService,
+    public favoriteService: FavoriteService,
     private breakpointObserver: BreakpointObserver
   ) {}
 

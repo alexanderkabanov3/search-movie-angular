@@ -10,6 +10,7 @@ export class FavoriteService {
   public movieId = new Subject();
   public seriesId = new Subject();
   public empty = new Subject();
+  public btnExist = JSON.parse(window.localStorage.getItem('btnExist'));
 
   constructor() {}
 

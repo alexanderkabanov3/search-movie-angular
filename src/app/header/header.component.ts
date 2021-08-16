@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import {UserDataService} from '../services/user-data.service';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {FavoriteService} from '../services/favorite.service';
 
 @Component({
   selector: 'app-header',
@@ -35,7 +36,10 @@ export class HeaderComponent implements OnInit, DoCheck {
   @ViewChild('menuHeader') menuHeader: ElementRef;
   @ViewChild('burgerContent') burgerContent: ElementRef;
 
-  constructor(private userData: UserDataService) {}
+  constructor(
+    private userData: UserDataService,
+    public favoriteService: FavoriteService
+  ) {}
 
   ngOnInit(): void {
     const userName = localStorage.getItem('userName');
@@ -57,6 +61,11 @@ export class HeaderComponent implements OnInit, DoCheck {
     this.checkedIn = false;
     this.userData.userName = '';
     localStorage.setItem('userName', '');
+    this.favoriteService.btnExist = false;
+    window.localStorage.setItem(
+      'btnExist',
+      JSON.stringify(this.favoriteService.btnExist)
+    );
   }
 
   burger_click() {
