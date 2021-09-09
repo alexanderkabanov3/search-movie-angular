@@ -56,7 +56,7 @@ export class DetailSeriesComponent implements OnInit, DoCheck {
       this.fetchItem(movId).then((data: any) => {
         this.item = data;
 
-        let genre = [];
+        const genre = [];
         this.item.genres.forEach((element) => {
           genre.push(element.name);
         });
@@ -84,7 +84,7 @@ export class DetailSeriesComponent implements OnInit, DoCheck {
     this.mediaQueries();
   }
 
-  ngDoCheck() {
+  ngDoCheck(): void {
     this.modal = this.trailerService.open;
   }
 

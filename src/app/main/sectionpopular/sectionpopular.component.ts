@@ -29,25 +29,22 @@ export class SectionpopularComponent implements OnInit {
 
   constructor(
     private movieHttp: HttpClient,
-    private sreiesHttp: HttpClient,
+    private seriesHttp: HttpClient,
     private breakpointObserver: BreakpointObserver
   ) {}
 
   ngOnInit(): void {
     // fetching movie list
-    this.movieHttp.get(this.urlPopularMovies).subscribe((response: Results) => {
-      this.movArr = response.results;
-    });
+    this.movieHttp.get(this.urlPopularMovies).subscribe((response: Results) => this.movArr = response.results);
 
     // fetching series list
-    this.sreiesHttp.get(this.urlPopularTv).subscribe((response: Results) => {
-      this.serArr = response.results;
-    });
+    this.seriesHttp.get(this.urlPopularTv).subscribe((response: Results) => this.serArr = response.results);
 
     this.mediaQueries();
   }
 
-  switchBtn(event: any): void {
+  switchBtn({event}: {event: any}): void {
+
     if (!event.target.classList.contains('popular__select')) {
       const childrenArr = event.target.parentNode.children;
       for (const element of childrenArr) {

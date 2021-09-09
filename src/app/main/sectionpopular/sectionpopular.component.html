@@ -2,7 +2,7 @@
   <div class="container">
     <div class="popular__head">
       <h2 class="headingh2">Popular</h2>
-      <div class="popular__select" (click)="switchBtn($event)">
+      <div class="popular__select" (click)="switchBtn({event : $event})">
         <div class="popular__btn popular__btn--focus">on cinema</div>
         <div class="popular__btn">on TV</div>
       </div>
@@ -25,6 +25,7 @@
             item.poster_path
           }} 2x"
           loading="lazy"
+          alt='poster'
         />
         <div
           align="center"

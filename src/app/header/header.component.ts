@@ -9,6 +9,8 @@ import {
 import {UserDataService} from '../services/user-data.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {FavoriteService} from '../services/favorite.service';
+import {NavigationEnd, Router} from '@angular/router';
+import {RouteService} from '../services/route.service';
 
 @Component({
   selector: 'app-header',
@@ -32,16 +34,29 @@ import {FavoriteService} from '../services/favorite.service';
 export class HeaderComponent implements OnInit, DoCheck {
   public checkedIn = false;
   public userName = 'UserName';
-  public quantityEvents = [];
   @ViewChild('menuHeader') menuHeader: ElementRef;
   @ViewChild('burgerContent') burgerContent: ElementRef;
 
   constructor(
     private userData: UserDataService,
-    public favoriteService: FavoriteService
+    public favoriteService: FavoriteService,
+    private router: Router,
+    private routesArray: RouteService
   ) {}
 
   ngOnInit(): void {
+    this.router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        this.routesArray.routes.push(event.url);
+
+        if (event.url === '/login' && localStorage.getItem('userName') !== '') {
+          this.router.navigate([
+            this.routesArray.routes[this.routesArray.routes.length - 2],
+          ]);
+        }
+      }
+    });
+
     const userName = localStorage.getItem('userName');
 
     if (userName !== null && userName.trim()) {
@@ -50,17 +65,18 @@ export class HeaderComponent implements OnInit, DoCheck {
     }
   }
 
-  ngDoCheck() {
+  ngDoCheck(): void {
     if (this.userData.userName !== undefined && this.userData.userName.trim()) {
       this.userName = this.userData.userName;
       this.checkedIn = true;
     }
   }
 
-  logOut() {
+  logOut(): void {
     this.checkedIn = false;
     this.userData.userName = '';
     localStorage.setItem('userName', '');
+    localStorage.setItem('token', '');
     this.favoriteService.btnExist = false;
     window.localStorage.setItem(
       'btnExist',
@@ -68,7 +84,7 @@ export class HeaderComponent implements OnInit, DoCheck {
     );
   }
 
-  burger_click() {
+  burger_click(): void {
     if (this.burgerContent.nativeElement.classList.contains('burger-open')) {
       this.burgerContent.nativeElement.classList.remove('burger-open');
       this.menuHeader.nativeElement.classList.remove('burger-open');
@@ -79,7 +95,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   @HostListener('window:click', ['$event.target'])
-  emptyCLick(event) {
+  emptyCLick(event: HTMLElement): void {
     if (
       !event.classList.contains('flex') &&
       !event.classList.contains('menu') &&

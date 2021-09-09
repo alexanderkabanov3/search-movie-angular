@@ -5,13 +5,13 @@
       class="signUp__input"
       type="text"
       [(ngModel)]="userName"
-      formControlName="username"
+      formControlName="name"
     />
     <p
       class="signUp__empty"
-      *ngIf="form.get('username').invalid && form.get('username').touched"
+      *ngIf="form.get('name').invalid && form.get('name').touched"
     >
-      username must have at least 6 characters
+      username must have at least 4 characters
     </p>
   </div>
   <div class="signUp__block">
@@ -26,13 +26,13 @@
       class="signUp__empty"
       *ngIf="form.get('password').invalid && form.get('password').touched"
     >
-      password must have at least 6 characters
+      password must have at least 8 characters
     </p>
   </div>
+  <p style="padding-top: 0.5em; color: #c6232d; font-size: 17px; align-self: flex-start">
+    {{errorMessage}}
+  </p>
   <button class="signUp__btn" (click)="submit()" [disabled]="form.invalid">
     Log In
   </button>
-  <p style="padding-top: 0.5em; font-size: 13px; align-self: flex-start">
-    *It's a test section, which doesn't bind with any database
-  </p>
 </form>

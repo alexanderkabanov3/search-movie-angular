@@ -55,7 +55,7 @@ export class MovieContentComponent implements OnInit {
         pageNumber = (pageNumber - 1) * 10;
       }
 
-      let end = pageNumber + 9;
+      const end = pageNumber + 9;
 
       for (pageNumber; pageNumber <= end; pageNumber++) {
         if (totalArr[pageNumber] !== undefined) {
@@ -65,7 +65,7 @@ export class MovieContentComponent implements OnInit {
 
       if (this.itemArr[0].known_for !== undefined && this.peopleFlag) {
         this.itemArr.forEach((element) => {
-          let together = [];
+          const together = [];
           element.known_for.forEach((e) => {
             if (e.original_title !== undefined) {
               together.push(e.original_title);

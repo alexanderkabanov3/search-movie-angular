@@ -15,3 +15,8 @@ export interface MediaItem {
   backdrop_path: string;
   videos: any;
 }
+
+
+export interface Cast {
+  cast: Array<MediaItem>;
+}

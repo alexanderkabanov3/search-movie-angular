@@ -2,6 +2,7 @@ import {Component, DoCheck, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {UserDataService} from 'src/app/services/user-data.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-sign-up',
@@ -11,24 +12,29 @@ import {UserDataService} from 'src/app/services/user-data.service';
 export class SignUpComponent implements OnInit, DoCheck {
   public form: FormGroup;
   public confirm = true;
+  public errorMessage = '';
 
-  constructor(private userData: UserDataService, private router: Router) {}
+  constructor(
+    private userData: UserDataService,
+    private router: Router,
+    private userRegister: HttpClient
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup(
       {
-        username: new FormControl('', [
+        name: new FormControl('', [
           Validators.required,
-          Validators.minLength(6),
+          Validators.minLength(4),
         ]),
         email: new FormControl('', [Validators.email, Validators.required]),
         password: new FormControl('', [
           Validators.required,
-          Validators.minLength(6),
+          Validators.minLength(8),
         ]),
-        confirmpassword: new FormControl('', [
+        passwordConfirm: new FormControl('', [
           Validators.required,
-          Validators.minLength(6),
+          Validators.minLength(8),
         ]),
       },
       {
@@ -37,24 +43,35 @@ export class SignUpComponent implements OnInit, DoCheck {
     );
   }
 
-  ngDoCheck() {
-    if (this.form.errors !== null || this.form.value.confirmpassword === '') {
-      this.confirm = false;
-    } else {
-      this.confirm = true;
-    }
+  ngDoCheck(): void {
+    this.form.errors !== null || this.form.value.passwordConfirm === ''
+      ? (this.confirm = false)
+      : (this.confirm = true);
   }
 
-  password(formGroup: FormGroup) {
+  password(formGroup: FormGroup): null | object {
     const {value: password} = formGroup.get('password');
-    const {value: confirmPassword} = formGroup.get('confirmpassword');
-    return password === confirmPassword ? null : {passwordNotMatch: true};
+    const {value: passwordConfirm} = formGroup.get('passwordConfirm');
+    return password === passwordConfirm ? null : {passwordNotMatch: true};
   }
 
-  submit() {
-    this.userData.userName = this.form.value.username;
-    this.userData.password = this.form.value.password;
-    localStorage.setItem('userName', this.form.value.username);
-    this.router.navigate(['']);
+  submit(): void {
+    this.userRegister
+      .post(
+        'https://search-movie-server.herokuapp.com/api/auth/signup',
+        this.form.value
+      )
+      .subscribe(
+        (observer: any) => {
+          this.userData.userName = this.form.value.name;
+          localStorage.setItem('userName', this.form.value.name);
+          localStorage.setItem('token', observer.token);
+
+          this.router.navigate(['']);
+        },
+        (error) => {
+          this.errorMessage = error.error.message;
+        }
+      );
   }
 }

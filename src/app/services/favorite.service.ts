@@ -14,7 +14,7 @@ export class FavoriteService {
 
   constructor() {}
 
-  addMovieItem(item: any) {
+  addMovieItem(item: any): void {
     if (JSON.parse(window.localStorage.getItem('movieFavorite')) !== null) {
       this.favoriteMovieArr = JSON.parse(
         window.localStorage.getItem('movieFavorite')
