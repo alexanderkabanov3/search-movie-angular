@@ -80,6 +80,8 @@
   &__poster {
     max-width: 15rem;
     border: 2px solid #fff;
+    min-width: 14.5rem;
+    max-height: 8.5rem;
   }
 
   .play {
@@ -155,6 +157,8 @@
 
     &__poster {
       max-width: 27rem;
+      min-width: 27rem;
+      max-height: 16rem;
     }
 
     &__date {

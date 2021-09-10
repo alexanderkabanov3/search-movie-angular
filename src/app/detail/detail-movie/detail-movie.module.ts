@@ -5,6 +5,7 @@ import {NgCircleProgressModule} from 'ng-circle-progress';
 import {PipesModule} from 'src/app/pipes/pipes.module';
 import {TrailerModule} from 'src/app/trailer/trailer.module';
 import {RouterModule} from '@angular/router';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [DetailMovieComponent],
@@ -29,6 +30,7 @@ import {RouterModule} from '@angular/router';
     TrailerModule,
     RouterModule,
     RouterModule.forChild([{path: '', component: DetailMovieComponent}]),
+    FormsModule,
   ],
 })
 export class DetailMovieModule {}

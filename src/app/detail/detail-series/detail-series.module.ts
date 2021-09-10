@@ -5,6 +5,7 @@ import {TrailerModule} from 'src/app/trailer/trailer.module';
 import {NgCircleProgressModule} from 'ng-circle-progress';
 import {PipesModule} from 'src/app/pipes/pipes.module';
 import {RouterModule} from '@angular/router';
+import {FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [DetailSeriesComponent],
@@ -26,6 +27,7 @@ import {RouterModule} from '@angular/router';
       showInnerStroke: false,
       startFromZero: false,
     }),
+    FormsModule,
     PipesModule,
     RouterModule,
     RouterModule.forChild([

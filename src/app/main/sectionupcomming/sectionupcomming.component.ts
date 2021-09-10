@@ -54,17 +54,17 @@ export class SectionupcommingComponent implements OnInit, DoCheck {
     });
   }
 
-  ngDoCheck() {
+  ngDoCheck(): void {
     this.modal = this.trailerService.open;
   }
 
-  open(event) {
+  open(event): void {
     this.trailerService.movieId = event;
     this.trailerService.open = true;
   }
 
-  randomInteger() {
-    let rand = 0 - 0.5 + Math.random() * (19 - 0 + 1);
+  randomInteger(): number {
+    const rand = 0 - 0.5 + Math.random() * (19 + 1);
     return Math.round(rand);
   }
 }

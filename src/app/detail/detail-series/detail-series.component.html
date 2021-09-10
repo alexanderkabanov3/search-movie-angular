@@ -81,9 +81,6 @@
           <p class="overview__overview">{{ item.overview }}</p>
           <button
             class="overview__button"
-            [ngClass]="{
-              overview__button__disabled: !this.favoriteService.btnExist
-            }"
             [title]="
               !this.favoriteService.btnExist
                 ? 'please, register in order to add'
@@ -173,6 +170,54 @@
               {{ element.first_air_date || element.release_date | date }}
             </p>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="comments">
+      <div class="container">
+        <p class="comments__amount">{{ commentsAmount }} comments</p>
+        <div *ngFor="let comment of commentsArray" class="comments__comment">
+          <span class="comments__name">{{ comment.userName }}</span>
+          <span class="comments__date">{{
+            comment.date | date: 'MMM d, y, h:mm:ss a'
+          }}</span>
+          <p class="comments__text">{{ comment.text }}</p>
+          <button
+            class="comments__delete"
+            *ngIf="comment.userName === currentUser"
+            (click)="deleteComment(comment._id)"
+          >
+            delete comment
+          </button>
+        </div>
+        <div class="comments__leave">
+          <textarea
+            [(ngModel)]="comment"
+            [placeholder]="
+              this.favoriteService.btnExist
+                ? 'leave a comment'
+                : 'I am waiting for your registration :)'
+            "
+            class="comments__tap"
+            [disabled]="!this.favoriteService.btnExist"
+            [title]="
+              !this.favoriteService.btnExist
+                ? 'please, register in order to leave a comment'
+                : 'leave a comment'
+            "
+          ></textarea>
+          <button
+            class="comments__submit"
+            [disabled]="!this.favoriteService.btnExist || comment.length < 10"
+            [title]="
+              !this.favoriteService.btnExist || comment.length < 10
+                ? 'please, register or type at least 10 characters in order to leave a comment'
+                : 'leave a comment'
+            "
+            (click)="leaveComment()"
+          >
+            submit
+          </button>
         </div>
       </div>
     </div>
