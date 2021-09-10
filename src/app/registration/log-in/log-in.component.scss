@@ -1,12 +1,16 @@
 .signUp {
-  min-height: calc(100vh - 100px);
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 5em;
 
-  max-width: 425px;
+  min-width: 40rem;
+
+  .heading {
+    font-size: 2.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    text-transform: capitalize;
+  }
 
   &__block {
     width: 100%;
@@ -27,7 +31,7 @@
 
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 1.3rem;
     outline: none;
     border: 1px solid rgb(177, 177, 177);
 
@@ -42,7 +46,7 @@
 
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 1.3rem;
     outline: none;
     border: 1px solid rgb(177, 177, 177);
 
@@ -62,7 +66,7 @@
 
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 1.1rem;
     color: white;
     transition: 0.3s ease;
 

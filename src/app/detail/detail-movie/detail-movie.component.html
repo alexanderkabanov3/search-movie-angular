@@ -87,8 +87,16 @@
           <p class="overview__overview">{{ item.overview }}</p>
           <button
             class="overview__button"
+            [ngClass]="{
+              overview__button__disabled: !this.favoriteService.btnExist
+            }"
+            [title]="
+              !this.favoriteService.btnExist
+                ? 'please, register in order to add'
+                : 'add to favorite'
+            "
             (click)="addFavorite(item.id)"
-            *ngIf="this.favoriteService.btnExist"
+            [disabled]="!this.favoriteService.btnExist"
           >
             add to favorite
           </button>
@@ -170,6 +178,15 @@
               {{ element.release_date || element.first_air_date | date }}
             </p>
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="comments">
+      <div class="container">
+        <p class="comments__amount">{{ commentsAmount }} comments</p>
+        <div *ngFor="let comment of commentsArray"></div>
+        <div class="comments__leave">
+          <textarea></textarea>
         </div>
       </div>
     </div>

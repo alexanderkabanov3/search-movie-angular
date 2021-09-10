@@ -81,8 +81,17 @@
           <p class="overview__overview">{{ item.overview }}</p>
           <button
             class="overview__button"
+            [ngClass]="{
+              overview__button__disabled: !this.favoriteService.btnExist
+            }"
+            [title]="
+              !this.favoriteService.btnExist
+                ? 'please, register in order to add'
+                : 'add to favorite'
+            "
             id="{{ item.id }}"
             (click)="addFavorite($event)"
+            [disabled]="!this.favoriteService.btnExist"
           >
             add to favorite
           </button>

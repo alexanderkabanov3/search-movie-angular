@@ -31,18 +31,6 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'signup',
-    loadChildren: () =>
-      import('./registration/sign-up/sign-up.module').then(
-        (m) => m.SignUpModule
-      ),
-  },
-  {
-    path: 'login',
-    loadChildren: () =>
-      import('./registration/log-in/log-in.module').then((m) => m.LogInModule),
-  },
-  {
     path: 'people',
     loadChildren: () =>
       import('./navigationContent/people/people.module').then(

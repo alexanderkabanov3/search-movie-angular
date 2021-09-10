@@ -1,64 +1,50 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FavoriteService {
-  public favoriteMovieArr: any = [];
-  public favoriteSeriesArr: any = [];
-  public movieId = new Subject();
   public seriesId = new Subject();
-  public empty = new Subject();
+  public changes = new Subject();
   public btnExist = JSON.parse(window.localStorage.getItem('btnExist'));
 
-  constructor() {}
+  constructor(private postMovieHttp: HttpClient) {}
 
-  addMovieItem(item: any): void {
-    if (JSON.parse(window.localStorage.getItem('movieFavorite')) !== null) {
-      this.favoriteMovieArr = JSON.parse(
-        window.localStorage.getItem('movieFavorite')
-      );
-    }
+  addMovieItem(item: number): void {
+    const movObj = {
+      type: 'movie',
+      mediaId: item,
+    };
 
-    const index = this.favoriteMovieArr.findIndex((e) => {
-      return +e === +item;
-    });
+    const token = `Bearer ${localStorage.getItem('token')}`;
+    const header = new HttpHeaders().set('Authorization', token);
 
-    if (index >= 0) {
-      this.favoriteMovieArr.splice(index, 1);
-    } else {
-      this.movieId.next(item);
-    }
-
-    this.favoriteMovieArr.unshift(item);
-    window.localStorage.setItem(
-      'movieFavorite',
-      JSON.stringify(this.favoriteMovieArr)
-    );
+    this.postMovieHttp
+      .post('https://search-movie-server.herokuapp.com/api/favorite/', movObj, {
+        headers: header,
+      })
+      .subscribe((observer) => {
+        this.changes.next('changed');
+      });
   }
 
-  addSeriesItem(item: any) {
-    if (JSON.parse(window.localStorage.getItem('seriesFavorite')) !== null) {
-      this.favoriteSeriesArr = JSON.parse(
-        window.localStorage.getItem('seriesFavorite')
-      );
-    }
+  addSeriesItem(item: number): void {
+    const serObj = {
+      type: 'series',
+      mediaId: item,
+    };
 
-    const index = this.favoriteSeriesArr.findIndex((e) => {
-      return +e === +item;
-    });
+    const token = `Bearer ${localStorage.getItem('token')}`;
+    const header = new HttpHeaders().set('Authorization', token);
 
-    if (index >= 0) {
-      this.favoriteSeriesArr.splice(index, 1);
-    } else {
-      this.seriesId.next(item);
-    }
-
-    this.favoriteSeriesArr.unshift(item);
-    window.localStorage.setItem(
-      'seriesFavorite',
-      JSON.stringify(this.favoriteSeriesArr)
-    );
+    this.postMovieHttp
+      .post('https://search-movie-server.herokuapp.com/api/favorite/', serObj, {
+        headers: header,
+      })
+      .subscribe((observer) => {
+        this.changes.next('changed');
+      });
   }
 }

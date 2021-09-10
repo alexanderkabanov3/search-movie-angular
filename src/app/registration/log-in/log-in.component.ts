@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {NavigationEnd, NavigationStart, Router} from '@angular/router';
 import {FavoriteService} from 'src/app/services/favorite.service';
 import {UserDataService} from 'src/app/services/user-data.service';
 import {HttpClient} from '@angular/common/http';
-import {RouteService} from '../../services/route.service';
+import {RegistrationService} from '../../services/registration.service';
 
 @Component({
   selector: 'app-log-in',
@@ -13,16 +12,14 @@ import {RouteService} from '../../services/route.service';
 })
 export class LogInComponent implements OnInit {
   public form: FormGroup;
-  public password = '';
-  public userName = '';
   public errorMessage = '';
+  public preLoader = false;
 
   constructor(
     private userData: UserDataService,
-    private router: Router,
     public favoriteService: FavoriteService,
     private loginHttp: HttpClient,
-    private routesArray: RouteService
+    private registrationService: RegistrationService
   ) {}
 
   ngOnInit(): void {
@@ -36,6 +33,8 @@ export class LogInComponent implements OnInit {
   }
 
   submit(): void {
+    this.preLoader = true;
+
     this.loginHttp
       .post(
         'https://search-movie-server.herokuapp.com/api/auth/login',
@@ -46,10 +45,7 @@ export class LogInComponent implements OnInit {
           this.userData.userName = this.form.value.name;
           localStorage.setItem('userName', this.form.value.name);
           localStorage.setItem('token', observer.token);
-          this.router.navigate([
-            this.routesArray.routes[this.routesArray.routes.length - 2],
-          ]);
-
+          this.registrationService.logInBtn = false;
           this.favoriteService.btnExist = true;
 
           window.localStorage.setItem(
@@ -59,6 +55,7 @@ export class LogInComponent implements OnInit {
         },
         (error) => {
           this.errorMessage = error.error.message;
+          this.preLoader = false;
         }
       );
   }

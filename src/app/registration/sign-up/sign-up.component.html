@@ -1,50 +1,81 @@
-<form class="container signUp" [formGroup]="form">
-  <div class="signUp__block">
-    <div class="signUp__label">Username</div>
-    <input class="signUp__input" type="text" formControlName="name" />
-    <p
-      class="signUp__empty"
-      *ngIf="form.get('name').invalid && form.get('name').touched"
-    >
-      username must have at least 4 characters
-    </p>
+<div class="modal">
+  <div class="wrapper">
+    <div class="loader" *ngIf="preLoader; else mainContent">
+      <div class="dash uno"></div>
+      <div class="dash dos"></div>
+      <div class="dash tres"></div>
+      <div class="dash cuatro"></div>
+    </div>
+    <ng-template #mainContent>
+      <form class="container signUp" [formGroup]="form">
+        <h3 class="heading">registration</h3>
+        <div class="signUp__block">
+          <div class="signUp__label">Username</div>
+          <input class="signUp__input" type="text" formControlName="name" />
+          <p
+            class="signUp__empty"
+            *ngIf="form.get('name').invalid && form.get('name').touched"
+          >
+            username must have at least 4 characters
+          </p>
+        </div>
+        <div class="signUp__block">
+          <div class="signUp__label">E-mail</div>
+          <input class="signUp__input" type="text" formControlName="email" />
+          <p
+            class="signUp__empty"
+            *ngIf="form.get('email').invalid && form.get('email').touched"
+          >
+            email invalid
+          </p>
+        </div>
+        <div class="signUp__block">
+          <div class="signUp__label">Password</div>
+          <input
+            class="signUp__input"
+            type="password"
+            formControlName="password"
+          />
+          <p
+            class="signUp__empty"
+            *ngIf="form.get('password').invalid && form.get('password').touched"
+          >
+            password must have at least 8 characters
+          </p>
+        </div>
+        <div class="signUp__block">
+          <div class="signUp__label">Confirm password</div>
+          <input
+            class="signUp__inputConfirm"
+            type="password"
+            formControlName="passwordConfirm"
+            [ngClass]="{signUp__inputConfirm__valid: confirm}"
+          />
+          <p
+            class="signUp__empty"
+            *ngIf="!confirm && form.get('password').touched"
+          >
+            passwords must match
+          </p>
+        </div>
+        <p
+          style="
+            padding-top: 0.5em;
+            color: #c6232d;
+            font-size: 17px;
+            align-self: flex-start;
+          "
+        >
+          {{ errorMessage }}
+        </p>
+        <button
+          class="signUp__btn"
+          (click)="submit()"
+          [disabled]="form.invalid"
+        >
+          Sign Up
+        </button>
+      </form>
+    </ng-template>
   </div>
-  <div class="signUp__block">
-    <div class="signUp__label">E-mail</div>
-    <input class="signUp__input" type="text" formControlName="email" />
-    <p
-      class="signUp__empty"
-      *ngIf="form.get('email').invalid && form.get('email').touched"
-    >
-      email invalid
-    </p>
-  </div>
-  <div class="signUp__block">
-    <div class="signUp__label">Password</div>
-    <input class="signUp__input" type="password" formControlName="password" />
-    <p
-      class="signUp__empty"
-      *ngIf="form.get('password').invalid && form.get('password').touched"
-    >
-      password must have at least 8 characters
-    </p>
-  </div>
-  <div class="signUp__block">
-    <div class="signUp__label">Confirm password</div>
-    <input
-      class="signUp__inputConfirm"
-      type="password"
-      formControlName="passwordConfirm"
-      [ngClass]="{signUp__inputConfirm__valid: confirm}"
-    />
-    <p class="signUp__empty" *ngIf="!confirm && form.get('password').touched">
-      passwords must match
-    </p>
-  </div>
-  <p style="padding-top: 0.5em; color: #c6232d; font-size: 17px; align-self: flex-start">
-    {{errorMessage}}
-  </p>
-  <button class="signUp__btn" (click)="submit()" [disabled]="form.invalid">
-    Sign Up
-  </button>
-</form>
+</div>

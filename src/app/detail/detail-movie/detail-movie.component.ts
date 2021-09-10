@@ -26,6 +26,8 @@ export class DetailMovieComponent implements OnInit, DoCheck {
   public cast = [];
   public similar = [];
   public modal = false;
+  public commentsAmount = 0;
+  public commentsArray = [];
   public barValue = 25;
   public titleFontSize = '15';
   public outerStrokeWidth = 5;
@@ -99,7 +101,7 @@ export class DetailMovieComponent implements OnInit, DoCheck {
   }
 
   async fetchItem(id): Promise<object> {
-    return  await this.httpMovie
+    return await this.httpMovie
       .get(
         `https://api.themoviedb.org/3/movie/${id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&append_to_response=videos`
       )
@@ -114,16 +116,16 @@ export class DetailMovieComponent implements OnInit, DoCheck {
       .toPromise();
   }
 
-  async getCredits(id): Promise<object>  {
-    return  await this.httpCredits
+  async getCredits(id): Promise<object> {
+    return await this.httpCredits
       .get(
         `https://api.themoviedb.org/3/movie/${id}/credits?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&language=en-US`
       )
       .toPromise();
   }
 
-  async ageRait(id): Promise<object>  {
-    return  await this.httpMovie
+  async ageRait(id): Promise<object> {
+    return await this.httpMovie
       .get(
         `https://api.themoviedb.org/3/movie/${id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&append_to_response=release_dates`
       )

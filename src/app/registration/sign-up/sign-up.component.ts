@@ -1,8 +1,9 @@
 import {Component, DoCheck, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
 import {UserDataService} from 'src/app/services/user-data.service';
 import {HttpClient} from '@angular/common/http';
+import {RegistrationService} from '../../services/registration.service';
+import {FavoriteService} from '../../services/favorite.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -13,11 +14,13 @@ export class SignUpComponent implements OnInit, DoCheck {
   public form: FormGroup;
   public confirm = true;
   public errorMessage = '';
+  public preLoader = false;
 
   constructor(
     private userData: UserDataService,
-    private router: Router,
-    private userRegister: HttpClient
+    private userRegister: HttpClient,
+    private registrationService: RegistrationService,
+    private favoriteService: FavoriteService
   ) {}
 
   ngOnInit(): void {
@@ -56,6 +59,7 @@ export class SignUpComponent implements OnInit, DoCheck {
   }
 
   submit(): void {
+    this.preLoader = true;
     this.userRegister
       .post(
         'https://search-movie-server.herokuapp.com/api/auth/signup',
@@ -66,11 +70,17 @@ export class SignUpComponent implements OnInit, DoCheck {
           this.userData.userName = this.form.value.name;
           localStorage.setItem('userName', this.form.value.name);
           localStorage.setItem('token', observer.token);
+          this.registrationService.signUpBtn = false;
+          this.favoriteService.btnExist = true;
 
-          this.router.navigate(['']);
+          window.localStorage.setItem(
+            'btnExist',
+            JSON.stringify(this.favoriteService.btnExist)
+          );
         },
         (error) => {
           this.errorMessage = error.error.message;
+          this.preLoader = false;
         }
       );
   }

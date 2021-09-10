@@ -8,7 +8,7 @@ import {FooterComponent} from './footer/footer.component';
 import {MainComponent} from './main/main.component';
 import {SectionsearchComponent} from './main/sectionsearch/sectionsearch.component';
 import {HttpClientModule} from '@angular/common/http';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {SectionpopularComponent} from './main/sectionpopular/sectionpopular.component';
 import {SectionupcommingComponent} from './main/sectionupcomming/sectionupcomming.component';
 import {SectiontopratedComponent} from './main/sectiontoprated/sectiontoprated.component';
@@ -18,6 +18,8 @@ import {PipesModule} from './pipes/pipes.module';
 import {TrailerModule} from './trailer/trailer.module';
 import {FavoriteModule} from './header/favorite/favorite.module';
 import {LayoutModule} from '@angular/cdk/layout';
+import {LogInComponent} from './registration/log-in/log-in.component';
+import {SignUpComponent} from './registration/sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
@@ -29,12 +31,15 @@ import {LayoutModule} from '@angular/cdk/layout';
     SectionpopularComponent,
     SectionupcommingComponent,
     SectiontopratedComponent,
+    LogInComponent,
+    SignUpComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     NgCircleProgressModule.forRoot({
       backgroundColor: '#000',
       radius: 30,
