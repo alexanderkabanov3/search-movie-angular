@@ -53,7 +53,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    if (this.userData.userName !== undefined && this.userData.userName.trim()) {
+    if (this.userData.userName !== null && this.userData.userName !== '') {
       this.userName = this.userData.userName;
       this.checkedIn = true;
     }
