@@ -1,27 +1,38 @@
-# MediumcloneAngular
+# Searching movie application
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.2.3.
+The project was built using modern technologies: 
+- **Angular**
+- **Node.js**
+- **Express**
+- **MongoDB.**
 
-## Development server
+## Movie database
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Movie database API is taken from [TMDB](https://developers.themoviedb.org/3/getting-started/introduction)
 
-## Code scaffolding
+The functionality implemented using the TMDB's API:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- getting a list of the most popular movies and TV series
+- searching for a movie, series, or person by name
+- sorting by genre
+- sorting results by:
 
-## Build
+  - *popularity descending*
+  - *popularity ascending*
+  - *release date descending*
+  - *releaser date ascending*
+  - *rating descending*
+  - *rating ascending*
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- detail overview
+- watching the trailer
 
-## Running unit tests
+## User database
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+User database API is taken from [search-movie-server](https://github.com/alexanderkabanov3/search-movie-server)
 
-## Running end-to-end tests
+The functionality implemented using the user's API:
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- registration
+- adding a movie or a series to a favorites list
+- leaving comments below a movie, series, or person's profile
