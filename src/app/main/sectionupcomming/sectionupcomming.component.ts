@@ -21,7 +21,7 @@ export class SectionupcommingComponent implements OnInit, DoCheck {
     'https://api.themoviedb.org/3/movie/upcoming?api_key=f4a143e6e64636aa4b0cd6bec7236ad4';
   private movieUrl =
     'https://api.themoviedb.org/3/movie/popular?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&page=1';
-  public modal: boolean = false;
+  public modal = false;
 
   constructor(
     private bgHttp: HttpClient,

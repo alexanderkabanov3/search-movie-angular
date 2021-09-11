@@ -61,7 +61,7 @@ main {
 .container {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 2em;
+  padding: 0 1rem;
 }
 
 .header {
@@ -279,10 +279,16 @@ main {
 
   .wrapper {
     background-color: white;
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 10px;
     min-width: 40rem;
     min-height: 20rem;
+  }
+
+  @media screen and (max-width: 310px) {
+    .wrapper {
+      min-width: 20rem;
+    }
   }
 
   &__head {

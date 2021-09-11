@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 })
 export class TrailerService {
   public open = false;
-  public movieId = '';
+  public movieId: number | string;
   public seriesId = '';
 
   constructor() {}

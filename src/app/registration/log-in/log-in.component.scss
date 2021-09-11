@@ -6,7 +6,7 @@
   min-width: 40rem;
 
   .heading {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
     text-transform: capitalize;
@@ -22,7 +22,7 @@
   &__label {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    font-size: 20px;
+    font-size: 1.2rem;
   }
 
   &__input {
@@ -59,7 +59,7 @@
     margin-top: 1em;
     width: 100%;
     cursor: pointer;
-    padding: 1em;
+    padding: 1rem;
     background-color: #c6232d;
     outline: none;
     border: none;
@@ -87,5 +87,18 @@
     font-weight: 500;
     font-size: 13px;
     padding-top: 2px;
+  }
+}
+
+@media screen and (max-width: 310px) {
+  .signUp {
+    min-width: 30rem;
+    &__block {
+      width: 80%;
+    }
+
+    &__btn {
+      width: 80%;
+    }
   }
 }

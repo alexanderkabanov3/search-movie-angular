@@ -28,7 +28,7 @@ export class SectionsearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.bgHttp.get(this.movieUrl).subscribe((response: Results) => {
+    this.bgHttp.get<Results>(this.movieUrl).subscribe((response) => {
       this.bgImgPath = `https://image.tmdb.org/t/p/original${
         response.results[this.randomInteger()].backdrop_path
       }`;
