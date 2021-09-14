@@ -1,8 +1,9 @@
 import {HttpClient} from '@angular/common/http';
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TrailerService} from 'src/app/services/trailer.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {MediaItem, Results} from 'src/app/interfaces/fetchingResults';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-sectionupcomming',
@@ -14,7 +15,7 @@ import {MediaItem, Results} from 'src/app/interfaces/fetchingResults';
     ]),
   ],
 })
-export class SectionupcommingComponent implements OnInit, DoCheck {
+export class SectionupcommingComponent implements OnInit, OnDestroy {
   public bgImgPath: string;
   public trailerArr: MediaItem[] = [];
   private urlTrailers =
@@ -22,6 +23,7 @@ export class SectionupcommingComponent implements OnInit, DoCheck {
   private movieUrl =
     'https://api.themoviedb.org/3/movie/popular?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&page=1';
   public modal = false;
+  private modalSubscription: Subscription;
 
   constructor(
     private bgHttp: HttpClient,
@@ -33,7 +35,10 @@ export class SectionupcommingComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     this.trailerService.movieId = '';
     this.trailerService.seriesId = '';
-    this.trailerService.open = false;
+
+    this.modalSubscription = this.trailerService.open.subscribe((modal) => {
+      this.modal = modal;
+    });
     // fetching background image
     this.bgHttp.get(this.movieUrl).subscribe((response: Results) => {
       this.bgImgPath = `https://image.tmdb.org/t/p/original${
@@ -54,17 +59,17 @@ export class SectionupcommingComponent implements OnInit, DoCheck {
     });
   }
 
-  ngDoCheck(): void {
-    this.modal = this.trailerService.open;
-  }
-
   open(event): void {
     this.trailerService.movieId = event;
-    this.trailerService.open = true;
+    this.trailerService.open.next(true);
   }
 
   randomInteger(): number {
     const rand = 0 - 0.5 + Math.random() * (19 + 1);
     return Math.round(rand);
+  }
+
+  ngOnDestroy(): void {
+    this.modalSubscription.unsubscribe();
   }
 }

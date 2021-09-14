@@ -2,6 +2,7 @@ import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import {TrailerService} from '../services/trailer.service';
+import {MediaItem} from '../interfaces/fetchingResults';
 
 @Component({
   selector: 'app-trailer',
@@ -52,19 +53,17 @@ export class TrailerComponent implements OnInit {
     }
   }
 
-  close() {
-    this.trailerService.open = false;
+  close(): void {
+    this.trailerService.open.next(false);
     this.trailerService.movieId = '';
     this.trailerService.seriesId = '';
   }
 
-  async fetchItem(type, id) {
-    const fetch: any = await this.httpItem
-      .get(
+  async fetchItem(type, id): Promise<MediaItem> {
+    return await this.httpItem
+      .get<MediaItem>(
         `https://api.themoviedb.org/3/${type}/${id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&append_to_response=videos`
       )
       .toPromise();
-
-    return fetch;
   }
 }

@@ -1,11 +1,12 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Params} from '@angular/router';
 import {FavoriteService} from 'src/app/services/favorite.service';
 import {TrailerService} from 'src/app/services/trailer.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
 import {UserDataService} from '../../services/user-data.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-detail-series',
@@ -17,7 +18,7 @@ import {UserDataService} from '../../services/user-data.service';
     ]),
   ],
 })
-export class DetailSeriesComponent implements OnInit, DoCheck {
+export class DetailSeriesComponent implements OnInit, OnDestroy {
   public id: number;
   public bgImgPath: string;
   public preLoader = true;
@@ -35,6 +36,8 @@ export class DetailSeriesComponent implements OnInit, DoCheck {
   public outerStrokeWidth = 5;
   public unitsFontSize = '12';
   public currentUser = '';
+  private userSubscription: Subscription;
+  private modalSubscription: Subscription;
 
   constructor(
     private httpMovie: HttpClient,
@@ -51,10 +54,18 @@ export class DetailSeriesComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit(): void {
+    this.currentUser = localStorage.getItem('userName');
+    this.userSubscription = this.userData.userName.subscribe((name) => {
+      this.currentUser = name;
+    });
+
     window.scrollTo(0, 0);
     this.trailerService.movieId = '';
     this.trailerService.seriesId = '';
-    this.trailerService.open = false;
+
+    this.modalSubscription = this.trailerService.open.subscribe((modal) => {
+      this.modal = modal;
+    });
 
     this.router.params.subscribe((params: Params) => {
       window.scrollTo(0, 0);
@@ -95,11 +106,6 @@ export class DetailSeriesComponent implements OnInit, DoCheck {
     this.mediaQueries();
   }
 
-  ngDoCheck(): void {
-    this.currentUser = this.userData.userName;
-    this.modal = this.trailerService.open;
-  }
-
   async fetchItem(id): Promise<object> {
     return await this.httpMovie
       .get(
@@ -126,7 +132,7 @@ export class DetailSeriesComponent implements OnInit, DoCheck {
 
   open(event): void {
     this.trailerService.seriesId = event;
-    this.trailerService.open = true;
+    this.trailerService.open.next(true);
   }
 
   addFavorite(event): void {
@@ -231,5 +237,10 @@ export class DetailSeriesComponent implements OnInit, DoCheck {
           this.unitsFontSize = '8';
         }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
+    this.modalSubscription.unsubscribe();
   }
 }

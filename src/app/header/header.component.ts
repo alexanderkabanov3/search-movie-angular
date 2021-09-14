@@ -1,8 +1,8 @@
 import {
   Component,
-  DoCheck,
   ElementRef,
   HostListener,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
@@ -10,6 +10,7 @@ import {UserDataService} from '../services/user-data.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {FavoriteService} from '../services/favorite.service';
 import {RegistrationService} from '../services/registration.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -30,10 +31,11 @@ import {RegistrationService} from '../services/registration.service';
     ]),
   ],
 })
-export class HeaderComponent implements OnInit, DoCheck {
+export class HeaderComponent implements OnInit, OnDestroy {
   public checkedIn = false;
   public userName = 'UserName';
   public confirmation = false;
+  private userSubscription: Subscription;
   @ViewChild('menuHeader') menuHeader: ElementRef;
   @ViewChild('burgerContent') burgerContent: ElementRef;
 
@@ -46,22 +48,24 @@ export class HeaderComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     const userName = localStorage.getItem('userName');
 
-    if (userName !== null && userName.trim()) {
+    if (userName !== '' && userName !== null) {
       this.userName = userName;
       this.checkedIn = true;
     }
-  }
 
-  ngDoCheck(): void {
-    if (this.userData.userName !== null && this.userData.userName !== '') {
-      this.userName = this.userData.userName;
-      this.checkedIn = true;
-    }
+    this.userSubscription = this.userData.userName.subscribe((name) => {
+      if (name === '') {
+        this.checkedIn = false;
+      } else {
+        this.checkedIn = true;
+        this.userName = name;
+      }
+    });
   }
 
   logOut(): void {
     this.checkedIn = false;
-    this.userData.userName = '';
+    this.userData.userName.next('');
     localStorage.setItem('userName', '');
     localStorage.setItem('token', '');
     this.favoriteService.btnExist = false;
@@ -101,5 +105,9 @@ export class HeaderComponent implements OnInit, DoCheck {
       this.registrationService.logInBtn = false;
       this.confirmation = false;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
   }
 }

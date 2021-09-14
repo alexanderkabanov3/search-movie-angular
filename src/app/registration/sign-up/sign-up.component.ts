@@ -67,7 +67,7 @@ export class SignUpComponent implements OnInit, DoCheck {
       )
       .subscribe(
         (observer: any) => {
-          this.userData.userName = this.form.value.name;
+          this.userData.userName.next(this.form.value.name);
           localStorage.setItem('userName', this.form.value.name);
           localStorage.setItem('token', observer.token);
           this.registrationService.signUpBtn = false;

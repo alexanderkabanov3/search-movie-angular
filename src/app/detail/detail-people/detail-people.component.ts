@@ -1,8 +1,9 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {UserDataService} from '../../services/user-data.service';
 import {FavoriteService} from '../../services/favorite.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-detail-people',
@@ -14,7 +15,7 @@ import {FavoriteService} from '../../services/favorite.service';
     ]),
   ],
 })
-export class DetailPeopleComponent implements OnInit, DoCheck {
+export class DetailPeopleComponent implements OnInit, OnDestroy {
   public id: number;
   public bgImgPath: string;
   public preLoader = true;
@@ -24,6 +25,7 @@ export class DetailPeopleComponent implements OnInit, DoCheck {
   public commentsArray = [];
   public comment = '';
   public currentUser = '';
+  private userSubscription: Subscription;
 
   constructor(
     private httpMovie: HttpClient,
@@ -36,6 +38,11 @@ export class DetailPeopleComponent implements OnInit, DoCheck {
   ) {}
 
   ngOnInit(): void {
+    this.currentUser = localStorage.getItem('userName');
+    this.userSubscription = this.userData.userName.subscribe((name) => {
+      this.currentUser = name;
+    });
+
     this.id = +window.location.pathname.match(/\d+/)[0];
 
     this.getAllComments();
@@ -54,10 +61,6 @@ export class DetailPeopleComponent implements OnInit, DoCheck {
         }, 500);
       });
     });
-  }
-
-  ngDoCheck(): void {
-    this.currentUser = this.userData.userName;
   }
 
   async fetchItem(id): Promise<object> {
@@ -144,5 +147,9 @@ export class DetailPeopleComponent implements OnInit, DoCheck {
           console.log(error);
         }
       );
+  }
+
+  ngOnDestroy(): void {
+    this.userSubscription.unsubscribe();
   }
 }

@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
 export class AppComponent implements OnInit {
   constructor(private router: Router) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.router.events.subscribe(() => window.scrollTo(0, 0));
   }
 }

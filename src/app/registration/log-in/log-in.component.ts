@@ -42,7 +42,7 @@ export class LogInComponent implements OnInit {
       )
       .subscribe(
         (observer: any) => {
-          this.userData.userName = this.form.value.name;
+          this.userData.userName.next(this.form.value.name);
           localStorage.setItem('userName', this.form.value.name);
           localStorage.setItem('token', observer.token);
           this.registrationService.logInBtn = false;
