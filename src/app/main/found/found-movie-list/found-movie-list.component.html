@@ -10,7 +10,7 @@
       class="found__pageItemMovie"
       *ngFor="let index of quantityPages"
       [routerLink]="['/found', 'movies', 'page', index + 1]"
-      [ngClass]="{'found__pagesMovie--active': index + 1 === pageMatch}"
+      [ngClass]="{'found__pagesMovie--active': index + 1 === 1}"
     >
       {{ index + 1 }}
     </div>

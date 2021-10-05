@@ -1,9 +1,16 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TrailerService} from 'src/app/services/trailer.service';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {MediaItem, Results} from 'src/app/interfaces/fetchingResults';
+import {MediaItem, Results} from 'src/app/shared/interfaces/fetchingResults';
 import {Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {
+  dataReceivedStream,
+  trailerLeaveAction,
+  trailerOpenAction,
+  trailerStream,
+} from '../../shared/store/reducers/trailer';
+import {TrailerService} from '../../shared/services/trailer.service';
 
 @Component({
   selector: 'app-sectionupcomming',
@@ -23,45 +30,57 @@ export class SectionupcommingComponent implements OnInit, OnDestroy {
   private movieUrl =
     'https://api.themoviedb.org/3/movie/popular?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&page=1';
   public modal = false;
-  private modalSubscription: Subscription;
+  private trailerStream$ = this.store.select(trailerStream);
+  private dataReceived$ = this.store.select(dataReceivedStream);
+  private trailerSubscription$: Subscription;
+  private dataReceivedSubscription$: Subscription;
 
   constructor(
     private bgHttp: HttpClient,
     private trailerHttp: HttpClient,
     private posterHttp: HttpClient,
+    private store: Store,
     private trailerService: TrailerService
   ) {}
 
   ngOnInit(): void {
-    this.trailerService.movieId = '';
-    this.trailerService.seriesId = '';
-
-    this.modalSubscription = this.trailerService.open.subscribe((modal) => {
-      this.modal = modal;
+    this.trailerSubscription$ = this.trailerStream$.subscribe((trailer) => {
+      this.modal = trailer.open;
     });
     // fetching background image
-    this.bgHttp.get(this.movieUrl).subscribe((response: Results) => {
+    this.bgHttp.get<Results>(this.movieUrl).subscribe((response: Results) => {
       this.bgImgPath = `https://image.tmdb.org/t/p/original${
         response.results[this.randomInteger()].backdrop_path
       }`;
     });
     // fetching upcoming list
-    this.trailerHttp.get(this.urlTrailers).subscribe((response: Results) => {
-      response.results.forEach((element: MediaItem) => {
-        this.posterHttp
-          .get(
-            `https://api.themoviedb.org/3/movie/${element.id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&append_to_response=videos`
-          )
-          .subscribe((response: MediaItem) => {
-            this.trailerArr.push(response);
-          });
+
+    this.trailerHttp
+      .get<Results>(this.urlTrailers)
+      .subscribe((response: Results) => {
+        response.results.forEach((element: MediaItem) => {
+          this.posterHttp
+            .get<MediaItem>(
+              `https://api.themoviedb.org/3/movie/${element.id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&append_to_response=videos`
+            )
+            .subscribe((trailers: MediaItem) => {
+              if (trailers.videos.results[0] !== undefined) {
+                this.trailerArr.push(trailers);
+              }
+            });
+        });
       });
-    });
   }
 
-  open(event): void {
-    this.trailerService.movieId = event;
-    this.trailerService.open.next(true);
+  open(id: number): void {
+    this.trailerService.fetchTrailer(id, 'movie');
+
+    this.dataReceivedSubscription$ = this.dataReceived$.subscribe((data) => {
+      if (data) {
+        this.store.dispatch(trailerOpenAction());
+        this.dataReceivedSubscription$.unsubscribe();
+      }
+    });
   }
 
   randomInteger(): number {
@@ -70,6 +89,7 @@ export class SectionupcommingComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.modalSubscription.unsubscribe();
+    this.store.dispatch(trailerLeaveAction());
+    this.trailerSubscription$.unsubscribe();
   }
 }

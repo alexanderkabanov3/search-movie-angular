@@ -1,24 +1,18 @@
-<div class="loader" *ngIf="preLoader; else mainContent">
-  <div class="dash uno"></div>
-  <div class="dash dos"></div>
-  <div class="dash tres"></div>
-  <div class="dash cuatro"></div>
-</div>
-<ng-template #mainContent>
-  <div class="modal">
-    <div class="modal__block">
-      <div class="modal__head">
-        <div class="modal__title">{{ title }} ({{ date | date: 'yyyy' }})</div>
-        <div class="modal__close" (click)="close()">&#10006;</div>
+<div class="modal">
+  <div class="modal__block">
+    <div class="modal__head">
+      <div class="modal__title">
+        {{ trailerObj.title }} ({{ trailerObj.date | date: 'yyyy' }})
       </div>
-      <iframe
-        class="modal__frame"
-        [src]="url"
-        frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen=""
-        loading="lazy"
-      ></iframe>
+      <div class="modal__close" (click)="close()">&#10006;</div>
     </div>
+    <iframe
+      class="modal__frame"
+      [src]="trailerObj.url"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen=""
+      loading="lazy"
+    ></iframe>
   </div>
-</ng-template>
+</div>

@@ -6,7 +6,7 @@
         class="topRaited__item"
         *ngFor="let item of ratedArr"
         id="{{ item.id }}"
-        [routerLink]="['/movieoverview', item.id]"
+        [routerLink]="['/overview', 'movie', item.id]"
       >
         <img
           class="topRaited__poster"

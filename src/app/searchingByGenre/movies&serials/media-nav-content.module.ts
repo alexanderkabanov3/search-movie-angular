@@ -1,16 +1,17 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {DetailMovieComponent} from './detail-movie.component';
-import {NgCircleProgressModule} from 'ng-circle-progress';
-import {PipesModule} from 'src/app/shared/pipes/pipes.module';
-import {TrailerModule} from 'src/app/trailer/trailer.module';
+import {MediaNavComponent} from './media-nav-content.component';
 import {RouterModule} from '@angular/router';
-import {FormsModule} from '@angular/forms';
+import {SortingBarModule} from '../sorting-bar/sorting-bar.module';
+import {MediaContentComponent} from './media-content/media-content.component';
+import {NgCircleProgressModule} from 'ng-circle-progress';
 
 @NgModule({
-  declarations: [DetailMovieComponent],
+  declarations: [MediaNavComponent, MediaContentComponent],
   imports: [
     CommonModule,
+    RouterModule.forChild([{path: '', component: MediaNavComponent}]),
+    SortingBarModule,
     NgCircleProgressModule.forRoot({
       backgroundColor: '#000',
       radius: 30,
@@ -26,11 +27,6 @@ import {FormsModule} from '@angular/forms';
       showInnerStroke: false,
       startFromZero: false,
     }),
-    PipesModule,
-    TrailerModule,
-    RouterModule,
-    RouterModule.forChild([{path: '', component: DetailMovieComponent}]),
-    FormsModule,
   ],
 })
-export class DetailMovieModule {}
+export class MediaNavContentModule {}

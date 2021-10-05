@@ -2,7 +2,7 @@
   <div class="container">
     <div class="popular__head">
       <h2 class="headingh2">Popular</h2>
-      <div class="popular__select" (click)="switchBtn({event : $event})">
+      <div class="popular__select" (click)="switchBtn({event: $event})">
         <div class="popular__btn popular__btn--focus">on cinema</div>
         <div class="popular__btn">on TV</div>
       </div>
@@ -12,7 +12,7 @@
         class="popular__item"
         *ngFor="let item of movArr"
         id="{{ item.id }}"
-        [routerLink]="['/movieoverview', item.id]"
+        [routerLink]="['/overview', 'movie', item.id]"
       >
         <img
           class="popular__poster popular__poster--movie"
@@ -25,7 +25,7 @@
             item.poster_path
           }} 2x"
           loading="lazy"
-          alt='poster'
+          alt="poster"
         />
         <div
           align="center"
@@ -58,7 +58,7 @@
           class="popular__item"
           *ngFor="let element of serArr"
           id="{{ element.id }}"
-          [routerLink]="['/seriesoverview', element.id]"
+          [routerLink]="['/overview', 'tv', element.id]"
         >
           <img
             *ngIf="element.poster_path !== null; else alter"

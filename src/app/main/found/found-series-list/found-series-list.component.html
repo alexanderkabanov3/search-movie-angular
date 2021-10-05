@@ -10,7 +10,7 @@
       class="found__pageItemSeries"
       *ngFor="let index of quantityPages"
       [routerLink]="['/found', 'series', 'page', index + 1]"
-      [ngClass]="{'found__pagesSeries--active': index + 1 === pageMatch}"
+      [ngClass]="{'found__pagesSeries--active': index + 1 === 1}"
     >
       {{ index + 1 }}
     </div>

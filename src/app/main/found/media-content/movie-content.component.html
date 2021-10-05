@@ -3,7 +3,7 @@
     class="found__item"
     *ngFor="let item of itemArr"
     id="{{ item.id }}"
-    [routerLink]="['/movieoverview', item.id]"
+    [routerLink]="['/overview', 'movie', item.id]"
     [@item]
   >
     <img
@@ -45,7 +45,7 @@
       class="found__item"
       *ngFor="let item of itemArr"
       id="{{ item.id }}"
-      [routerLink]="['/seriesoverview', item.id]"
+      [routerLink]="['/overview', 'tv', item.id]"
       [@item]
     >
       <img

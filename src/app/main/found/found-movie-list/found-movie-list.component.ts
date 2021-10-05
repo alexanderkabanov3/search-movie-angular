@@ -6,7 +6,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import {Router} from '@angular/router';
-import {findValueService} from 'src/app/services/find-value.service';
+import {findValueService} from 'src/app/shared/services/find-value.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-found-movie-list',
@@ -14,17 +15,15 @@ import {findValueService} from 'src/app/services/find-value.service';
   styleUrls: ['./found-movie-list.component.scss'],
 })
 export class FoundMovieListComponent implements OnInit, OnDestroy {
-  public quantityPages = [];
+  public quantityPages: Array<number> = [];
   public pagesExist = true;
-  public pageMatch: number;
-  public routerObservable;
+  public routerObservable: Subscription;
   @ViewChild('pageItem') pageItems: ElementRef;
 
   constructor(public findServise: findValueService, private router: Router) {}
 
   ngOnInit(): void {
     this.countPages();
-    this.pageMatch = +window.location.pathname.match(/\d+/)[0];
 
     this.routerObservable = this.router.events.subscribe((e: any) => {
       if (e.url !== undefined && e.url.match(/\bmovies\b/)) {

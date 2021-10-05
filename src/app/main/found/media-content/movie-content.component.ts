@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {findValueService} from 'src/app/services/find-value.service';
+import {findValueService} from 'src/app/shared/services/find-value.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {ActivatedRoute, Params} from '@angular/router';
+import {PersonItem} from '../../../shared/interfaces/fetchingResults';
 
 @Component({
   selector: 'app-movie-content',
@@ -18,7 +19,7 @@ export class MovieContentComponent implements OnInit {
   public movieFlag = true;
   public seriesFlag = true;
   public peopleFlag = true;
-  public knownArr = [];
+  public knownArr: Array<string> = [];
 
   constructor(
     public findService: findValueService,
@@ -49,7 +50,7 @@ export class MovieContentComponent implements OnInit {
 
       let pageNumber = +params.page;
 
-      if (pageNumber == 1) {
+      if (pageNumber === 1) {
         pageNumber = 0;
       } else {
         pageNumber = (pageNumber - 1) * 10;
@@ -64,8 +65,8 @@ export class MovieContentComponent implements OnInit {
       }
 
       if (this.itemArr[0].known_for !== undefined && this.peopleFlag) {
-        this.itemArr.forEach((element) => {
-          const together = [];
+        this.itemArr.forEach((element: PersonItem) => {
+          const together: Array<string> = [];
           element.known_for.forEach((e) => {
             if (e.original_title !== undefined) {
               together.push(e.original_title);

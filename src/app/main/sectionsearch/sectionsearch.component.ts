@@ -1,9 +1,9 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {findValueService} from 'src/app/services/find-value.service';
+import {findValueService} from 'src/app/shared/services/find-value.service';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {Results} from 'src/app/interfaces/fetchingResults';
+import {Results} from 'src/app/shared/interfaces/fetchingResults';
 
 @Component({
   selector: 'app-sectionsearch',

@@ -6,11 +6,23 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {UserDataService} from '../services/user-data.service';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {FavoriteService} from '../services/favorite.service';
-import {RegistrationService} from '../services/registration.service';
+import {FavoriteService} from '../shared/services/favorite.service';
 import {Subscription} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {
+  loggedInSelector,
+  userLeaveAction,
+  usernameSelector,
+} from '../shared/store/reducers/user';
+import {
+  logInBlock,
+  logInEnter,
+  logInLeave,
+  signUpBlock,
+  signUpEnter,
+  signUpLeave,
+} from '../shared/store/reducers/authBlock';
 
 @Component({
   selector: 'app-header',
@@ -32,47 +44,25 @@ import {Subscription} from 'rxjs';
   ],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  public checkedIn = false;
-  public userName = 'UserName';
+  public checkedIn$ = this.store.select(loggedInSelector);
+  public userName$ = this.store.select(usernameSelector);
+  public signUpBlock$ = this.store.select(signUpBlock);
+  public logInBlock$ = this.store.select(logInBlock);
   public confirmation = false;
   private userSubscription: Subscription;
   @ViewChild('menuHeader') menuHeader: ElementRef;
   @ViewChild('burgerContent') burgerContent: ElementRef;
 
-  constructor(
-    private userData: UserDataService,
-    public favoriteService: FavoriteService,
-    public registrationService: RegistrationService
-  ) {}
+  constructor(public favoriteService: FavoriteService, private store: Store) {}
 
-  ngOnInit(): void {
-    const userName = localStorage.getItem('userName');
-
-    if (userName !== '' && userName !== null) {
-      this.userName = userName;
-      this.checkedIn = true;
-    }
-
-    this.userSubscription = this.userData.userName.subscribe((name) => {
-      if (name === '') {
-        this.checkedIn = false;
-      } else {
-        this.checkedIn = true;
-        this.userName = name;
-      }
-    });
-  }
+  ngOnInit(): void {}
 
   logOut(): void {
-    this.checkedIn = false;
-    this.userData.userName.next('');
-    localStorage.setItem('userName', '');
+    this.store.dispatch(userLeaveAction());
+
+    localStorage.setItem('userName', null);
+    localStorage.setItem('loggedIn', JSON.stringify(false));
     localStorage.setItem('token', '');
-    this.favoriteService.btnExist = false;
-    window.localStorage.setItem(
-      'btnExist',
-      JSON.stringify(this.favoriteService.btnExist)
-    );
     this.confirmation = false;
   }
 
@@ -101,10 +91,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @HostListener('window:click', ['$event.target'])
   emptySignUpCLick(event: HTMLElement): void {
     if (event.classList.contains('modal')) {
-      this.registrationService.signUpBtn = false;
-      this.registrationService.logInBtn = false;
+      this.store.dispatch(signUpLeave());
+      this.store.dispatch(logInLeave());
       this.confirmation = false;
     }
+  }
+
+  logIn(): void {
+    this.store.dispatch(logInEnter());
+  }
+
+  signUp(): void {
+    this.store.dispatch(signUpEnter());
   }
 
   ngOnDestroy(): void {

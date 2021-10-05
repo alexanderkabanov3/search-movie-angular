@@ -1,31 +1,29 @@
 import {
   Component,
-  DoCheck,
   ElementRef,
   OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import {Router} from '@angular/router';
-import {findValueService} from 'src/app/services/find-value.service';
+import {findValueService} from 'src/app/shared/services/find-value.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-found-people-list',
   templateUrl: './found-people-list.component.html',
   styleUrls: ['./found-people-list.component.scss'],
 })
-export class FoundPeopleListComponent implements OnInit, DoCheck, OnDestroy {
-  public quantityPages = [];
+export class FoundPeopleListComponent implements OnInit, OnDestroy {
+  public quantityPages: Array<number> = [];
   public pagesExist = true;
-  public pageMatch: number;
-  public routerObservable;
+  public routerObservable: Subscription;
   @ViewChild('pageItem') pageItems: ElementRef;
 
   constructor(public findServise: findValueService, private router: Router) {}
 
   ngOnInit(): void {
     this.countPages();
-    this.pageMatch = +window.location.pathname.match(/\d+/)[0];
 
     this.routerObservable = this.router.events.subscribe((e: any) => {
       if (
@@ -46,13 +44,11 @@ export class FoundPeopleListComponent implements OnInit, DoCheck, OnDestroy {
     });
   }
 
-  ngDoCheck() {}
-
-  ngOnDestroy() {
+  ngOnDestroy(): void {
     this.routerObservable.unsubscribe();
   }
 
-  countPages() {
+  countPages(): void {
     let pages = this.findServise.peopleArr.length;
     pages = pages / 10;
     if (pages % 10 !== 0) {
@@ -68,7 +64,7 @@ export class FoundPeopleListComponent implements OnInit, DoCheck, OnDestroy {
       .map((x, i) => i);
   }
 
-  switchPage(event: any) {
+  switchPage(event: any): void {
     if (!event.target.classList.contains('found__pagesPerson')) {
       const pagesList = event.target.parentNode.children;
       for (const item of pagesList) {

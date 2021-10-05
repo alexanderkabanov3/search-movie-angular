@@ -1,9 +1,10 @@
 import {Component, DoCheck, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserDataService} from 'src/app/services/user-data.service';
 import {HttpClient} from '@angular/common/http';
-import {RegistrationService} from '../../services/registration.service';
-import {FavoriteService} from '../../services/favorite.service';
+import {FavoriteService} from '../../shared/services/favorite.service';
+import {Store} from '@ngrx/store';
+import {userEnterAction} from '../../shared/store/reducers/user';
+import {logInLeave, signUpLeave} from '../../shared/store/reducers/authBlock';
 
 @Component({
   selector: 'app-sign-up',
@@ -17,10 +18,9 @@ export class SignUpComponent implements OnInit, DoCheck {
   public preLoader = false;
 
   constructor(
-    private userData: UserDataService,
     private userRegister: HttpClient,
-    private registrationService: RegistrationService,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
@@ -67,16 +67,14 @@ export class SignUpComponent implements OnInit, DoCheck {
       )
       .subscribe(
         (observer: any) => {
-          this.userData.userName.next(this.form.value.name);
-          localStorage.setItem('userName', this.form.value.name);
-          localStorage.setItem('token', observer.token);
-          this.registrationService.signUpBtn = false;
-          this.favoriteService.btnExist = true;
-
-          window.localStorage.setItem(
-            'btnExist',
-            JSON.stringify(this.favoriteService.btnExist)
+          this.store.dispatch(
+            userEnterAction({username: this.form.value.name})
           );
+
+          localStorage.setItem('userName', this.form.value.name);
+          localStorage.setItem('loggedIn', JSON.stringify(true));
+          localStorage.setItem('token', observer.token);
+          this.store.dispatch(signUpLeave());
         },
         (error) => {
           this.errorMessage = error.error.message;

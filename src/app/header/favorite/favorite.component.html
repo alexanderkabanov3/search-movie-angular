@@ -1,6 +1,6 @@
 <div class="favorite__favoriteContainer">
   <span class="favorite__favoriteEmpty" *ngIf="empty">Empty</span>
-  <div class="favorite__card" *ngFor="let item of movie" [@item]>
+  <div class="favorite__card" *ngFor="let item of media" [@item]>
     <div class="favorite__left">
       <img
         *ngIf="item.poster_path !== null; else alter"
@@ -17,33 +17,17 @@
           src="https://st.depositphotos.com/2251265/2417/i/600/depositphotos_24176415-stock-photo-blank-poster-on-a-wood.jpg"
         />
       </ng-template>
-      <p class="favorite__title" [routerLink]="['/movieoverview', item.id]">
-        {{ item.title }} ({{ item.release_date | date: 'yyyy' }})
+      <p
+        class="favorite__title"
+        [routerLink]="['/overview', item.type, item.id]"
+      >
+        {{ item.title || item.name }} ({{
+          item.release_date || item.first_air_date | date: 'yyyy'
+        }})
       </p>
     </div>
-    <p class="favorite__close" (click)="deleteMovie(item.id)">&#10006;</p>
-  </div>
-  <div class="favorite__card" *ngFor="let element of series" [@item]>
-    <div class="favorite__left">
-      <img
-        *ngIf="element.poster_path !== null; else alter"
-        class="favorite__poster"
-        loading="lazy"
-        src="https://www.themoviedb.org/t/p/w220_and_h330_face{{
-          element.poster_path
-        }}"
-      />
-      <ng-template #alter>
-        <img
-          class="favorite__poster"
-          loading="lazy"
-          src="https://st.depositphotos.com/2251265/2417/i/600/depositphotos_24176415-stock-photo-blank-poster-on-a-wood.jpg"
-        />
-      </ng-template>
-      <p class="favorite__title" [routerLink]="['/seriesoverview', element.id]">
-        {{ element.name }} ({{ element.first_air_date | date: 'yyyy' }})
-      </p>
-    </div>
-    <p class="favorite__close" (click)="deleteSeries(element.id)">&#10006;</p>
+    <p class="favorite__close" (click)="deleteMovie(item.type, item.id)">
+      &#10006;
+    </p>
   </div>
 </div>

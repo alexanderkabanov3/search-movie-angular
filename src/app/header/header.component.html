@@ -10,26 +10,26 @@
       <div class="dropdown">
         <button class="dropbtn">movies</button>
         <div class="dropdown-content">
-          <a [routerLink]="['/movie', 'popular']">popular</a>
-          <a [routerLink]="['/movie', 'playing']">now playing</a>
-          <a [routerLink]="['/movie', 'upcoming']">upcoming</a>
-          <a [routerLink]="['/movie', 'rated']">top rated</a>
+          <a [routerLink]="['media', 'movie', 'popular']">popular</a>
+          <a [routerLink]="['media', 'movie', 'now_playing']">now playing</a>
+          <a [routerLink]="['media', 'movie', 'upcoming']">upcoming</a>
+          <a [routerLink]="['media', 'movie', 'top_rated']">top rated</a>
         </div>
       </div>
       <div class="dropdown">
         <button class="dropbtn">tv shows</button>
         <div class="dropdown-content">
-          <a [routerLink]="['/series', 'popular']">popular</a>
-          <a [routerLink]="['/series', 'airing']">aiiring today</a>
-          <a [routerLink]="['/series', 'tv']">on tv</a>
-          <a [routerLink]="['/series', 'rated']">top rated</a>
+          <a [routerLink]="['media', 'tv', 'popular']">popular</a>
+          <a [routerLink]="['media', 'tv', 'airing_today']">airing today</a>
+          <a [routerLink]="['media', 'tv', 'on_the_air']">on the air</a>
+          <a [routerLink]="['media', 'tv', 'top_rated']">top rated</a>
         </div>
       </div>
       <div class="dropdown">
         <button class="dropbtn" [routerLink]="['/people']">people</button>
       </div>
     </nav>
-    <div class="dropdown" *ngIf="checkedIn">
+    <div class="dropdown" *ngIf="checkedIn$ | async">
       <button class="dropbtn header__favorite">
         <img
           src="assets/img/header/favoriteMoviesLogo0.png"
@@ -42,12 +42,14 @@
         <app-favorite></app-favorite>
       </div>
     </div>
-    <div class="header__userName" *ngIf="checkedIn">{{ userName }}</div>
+    <div class="header__userName" *ngIf="checkedIn$ | async">
+      {{ userName$ | async }}
+    </div>
     <div class="header__enter">
       <div
         class="header__enterItem"
-        *ngIf="!checkedIn"
-        (click)="this.registrationService.logInBtn = true"
+        *ngIf="!(checkedIn$ | async)"
+        (click)="logIn()"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -76,8 +78,8 @@
       </div>
       <div
         class="header__enterItem"
-        *ngIf="!checkedIn"
-        (click)="this.registrationService.signUpBtn = true"
+        *ngIf="!(checkedIn$ | async)"
+        (click)="signUp()"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +115,7 @@
       </div>
       <div
         class="header__enterItem"
-        *ngIf="checkedIn"
+        *ngIf="checkedIn$ | async"
         (click)="confirmation = true"
       >
         <svg
@@ -139,8 +141,8 @@
       <div class="menu"></div>
       <div class="menu"></div>
     </div>
-    <app-sign-up *ngIf="this.registrationService.signUpBtn"></app-sign-up>
-    <app-log-in *ngIf="this.registrationService.logInBtn"></app-log-in>
+    <app-sign-up *ngIf="signUpBlock$ | async"></app-sign-up>
+    <app-log-in *ngIf="logInBlock$ | async"></app-log-in>
     <div class="modal" *ngIf="confirmation">
       <div class="header__sure">
         <p class="header__question">Are you sure?</p>
@@ -156,9 +158,9 @@
       </div>
     </div>
     <div id="burger-content" class="flex" #burgerContent>
-      <div *ngIf="checkedIn">
+      <div *ngIf="checkedIn$ | async">
         <div class="burger__enter">
-          <a class="header__userName">{{ userName }}</a>
+          <a class="header__userName">{{ userName$ | async }}</a>
           <a class="header__enterItem">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -182,8 +184,8 @@
       <div class="burger__enter">
         <div
           class="header__enterItem"
-          *ngIf="!checkedIn"
-          (click)="this.registrationService.logInBtn = true"
+          *ngIf="!(checkedIn$ | async)"
+          (click)="logIn()"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -212,8 +214,8 @@
         </div>
         <div
           class="header__enterItem"
-          *ngIf="!checkedIn"
-          (click)="this.registrationService.signUpBtn = true"
+          *ngIf="!(checkedIn$ | async)"
+          (click)="signUp()"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -1,6 +1,6 @@
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {MediaItem, Results} from '../../interfaces/fetchingResults';
+import {MediaItem, Results} from '../../shared/interfaces/fetchingResults';
 import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
 
 @Component({
@@ -24,7 +24,7 @@ export class SectiontopratedComponent implements OnInit {
 
   ngOnInit(): void {
     this.ratedHttp
-      .get(this.urlTopRatedMovies)
+      .get<Results>(this.urlTopRatedMovies)
       .subscribe((response: Results) => {
         this.ratedArr = response.results;
       });

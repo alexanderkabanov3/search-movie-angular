@@ -52,7 +52,7 @@
           class="overview__person"
           *ngFor="let e of known"
           [routerLink]="
-            e.title ? ['/movieoverview', e.id] : ['/seriesoverview', e.id]
+            e.title ? ['/overview', 'movie', e.id] : ['/overview', 'tv', e.id]
           "
           [@item]
         >
@@ -87,7 +87,7 @@
           <p class="comments__text">{{ comment.text }}</p>
           <button
             class="comments__delete"
-            *ngIf="comment.userName === currentUser"
+            *ngIf="comment.userName === (currentUser$ | async)"
             (click)="deleteComment(comment._id)"
           >
             delete comment
@@ -97,23 +97,23 @@
           <textarea
             [(ngModel)]="comment"
             [placeholder]="
-              this.favoriteService.btnExist
+              (checkedIn$ | async)
                 ? 'leave a comment'
                 : 'I am waiting for your registration :)'
             "
             class="comments__tap"
-            [disabled]="!this.favoriteService.btnExist"
+            [disabled]="!(checkedIn$ | async)"
             [title]="
-              !this.favoriteService.btnExist
+              !(checkedIn$ | async)
                 ? 'please, register in order to leave a comment'
                 : 'leave a comment'
             "
           ></textarea>
           <button
             class="comments__submit"
-            [disabled]="!this.favoriteService.btnExist || comment.length < 10"
+            [disabled]="!(checkedIn$ | async) || comment.length < 10"
             [title]="
-              !this.favoriteService.btnExist || comment.length < 10
+              !(checkedIn$ | async) || comment.length < 10
                 ? 'please, register or type at least 10 characters in order to leave a comment'
                 : 'leave a comment'
             "

@@ -1,9 +1,12 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {animate, style, transition, trigger} from '@angular/animations';
-import {UserDataService} from '../../services/user-data.service';
-import {FavoriteService} from '../../services/favorite.service';
-import {Subscription} from 'rxjs';
+import {FavoriteService} from '../../shared/services/favorite.service';
+import {Store} from '@ngrx/store';
+import {
+  loggedInSelector,
+  usernameSelector,
+} from '../../shared/store/reducers/user';
 
 @Component({
   selector: 'app-detail-people',
@@ -15,7 +18,7 @@ import {Subscription} from 'rxjs';
     ]),
   ],
 })
-export class DetailPeopleComponent implements OnInit, OnDestroy {
+export class DetailPeopleComponent implements OnInit {
   public id: number;
   public bgImgPath: string;
   public preLoader = true;
@@ -24,34 +27,46 @@ export class DetailPeopleComponent implements OnInit, OnDestroy {
   public commentsAmount = 0;
   public commentsArray = [];
   public comment = '';
-  public currentUser = '';
-  private userSubscription: Subscription;
+  public currentUser$ = this.store.select(usernameSelector);
+  public checkedIn$ = this.store.select(loggedInSelector);
 
   constructor(
     private httpMovie: HttpClient,
     private httpCredits: HttpClient,
-    private userData: UserDataService,
     private postComment: HttpClient,
     private getAllCommentsHttp: HttpClient,
     private deleteCommentHttp: HttpClient,
-    public favoriteService: FavoriteService
+    public favoriteService: FavoriteService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
-    this.currentUser = localStorage.getItem('userName');
-    this.userSubscription = this.userData.userName.subscribe((name) => {
-      this.currentUser = name;
-    });
-
     this.id = +window.location.pathname.match(/\d+/)[0];
 
     this.getAllComments();
 
-    this.fetchItem(this.id).then((data: any) => {
-      this.item = data;
-      this.bgImgPath = `https://image.tmdb.org/t/p/original${this.item.profile_path}`;
+    this.fetchItem(this.id);
+  }
 
-      this.searchMovies(this.item.imdb_id).then(({person_results}: any) => {
+  fetchItem(id: number): void {
+    this.httpMovie
+      .get(
+        `https://api.themoviedb.org/3/person/${id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&language=en-US`
+      )
+      .subscribe((data: any) => {
+        this.item = data;
+        this.bgImgPath = `https://image.tmdb.org/t/p/original${this.item.profile_path}`;
+
+        this.searchMovies(this.item.imdb_id);
+      });
+  }
+
+  searchMovies(id: number): void {
+    this.httpCredits
+      .get(
+        `https://api.themoviedb.org/3/find/${id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&language=en-US&external_source=imdb_id`
+      )
+      .subscribe(({person_results}: any) => {
         if (person_results.length !== 0) {
           this.known = person_results[0].known_for;
         }
@@ -60,23 +75,6 @@ export class DetailPeopleComponent implements OnInit, OnDestroy {
           this.preLoader = false;
         }, 500);
       });
-    });
-  }
-
-  async fetchItem(id): Promise<object> {
-    return await this.httpMovie
-      .get(
-        `https://api.themoviedb.org/3/person/${id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&language=en-US`
-      )
-      .toPromise();
-  }
-
-  async searchMovies(id): Promise<object> {
-    return await this.httpCredits
-      .get(
-        `https://api.themoviedb.org/3/find/${id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&language=en-US&external_source=imdb_id`
-      )
-      .toPromise();
   }
 
   leaveComment(): void {
@@ -147,9 +145,5 @@ export class DetailPeopleComponent implements OnInit, OnDestroy {
           console.log(error);
         }
       );
-  }
-
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
   }
 }

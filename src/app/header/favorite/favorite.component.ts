@@ -1,6 +1,6 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Component, HostListener, OnInit} from '@angular/core';
-import {FavoriteService} from 'src/app/services/favorite.service';
+import {FavoriteService} from 'src/app/shared/services/favorite.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 
 @Component({
@@ -15,7 +15,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 })
 export class FavoriteComponent implements OnInit {
   public empty = true;
-  public movie = [];
+  public media = [];
   public series = [];
 
   constructor(
@@ -37,15 +37,10 @@ export class FavoriteComponent implements OnInit {
         observer.data.length > 0 ? (this.empty = false) : (this.empty = true);
 
         observer.data.forEach((e) => {
-          if (e.type === 'movie') {
-            this.fetchMovie('movie', e.mediaId).then((data: any) => {
-              this.movie.unshift(data);
-            });
-          } else if (e.type === 'series') {
-            this.fetchMovie('tv', e.mediaId).then((data: any) => {
-              this.series.unshift(data);
-            });
-          }
+          this.fetchMovie(e.type, e.mediaId).then((data: any) => {
+            data.type = e.type;
+            this.media.unshift(data);
+          });
         });
       });
 
@@ -58,25 +53,22 @@ export class FavoriteComponent implements OnInit {
           event.data.length > 0 ? (this.empty = false) : (this.empty = true);
 
           event.data.forEach((e) => {
-            if (e.type === 'movie') {
-              if (this.movie.findIndex((el) => el.id === e.mediaId) === -1) {
-                this.fetchMovie('movie', e.mediaId).then((data: any) => {
-                  this.movie.unshift(data);
-                });
-              }
-            } else if (e.type === 'series') {
-              if (this.series.findIndex((el) => el.id === e.mediaId) === -1) {
-                this.fetchMovie('tv', e.mediaId).then((data: any) => {
-                  this.series.unshift(data);
-                });
-              }
+            if (
+              this.media.findIndex(
+                (el) => el.id === e.mediaId && el.type === e.type
+              ) === -1
+            ) {
+              this.fetchMovie(e.type, e.mediaId).then((data: any) => {
+                data.type = e.type;
+                this.media.unshift(data);
+              });
             }
           });
         });
     });
   }
 
-  async fetchMovie(type, id): Promise<object> {
+  async fetchMovie(type: string, id: number): Promise<object> {
     return await this.httpMovie
       .get(
         `https://api.themoviedb.org/3/${type}/${id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&language=en-US`
@@ -84,36 +76,23 @@ export class FavoriteComponent implements OnInit {
       .toPromise();
   }
 
-  deleteMovie(event): void {
+  deleteMovie(type: string, id: number): void {
     const token = `Bearer ${localStorage.getItem('token')}`;
     const header = new HttpHeaders().set('Authorization', token);
 
     this.deleteFavorite
       .delete(
-        `https://search-movie-server.herokuapp.com/api/favorite/movie/${event}`,
+        `https://search-movie-server.herokuapp.com/api/favorite/${type}/${id}`,
         {headers: header}
       )
       .subscribe((observer: any) => {
         if (observer.status === 'success') {
-          this.favoriteService.changes.next('changed');
-          this.movie = this.movie.filter((el) => el.id !== event);
-        }
-      });
-  }
+          const index = this.media.findIndex(
+            (item) => item.id === id && item.type === type
+          );
 
-  deleteSeries(event): void {
-    const token = `Bearer ${localStorage.getItem('token')}`;
-    const header = new HttpHeaders().set('Authorization', token);
-
-    this.deleteFavorite
-      .delete(
-        `https://search-movie-server.herokuapp.com/api/favorite/series/${event}`,
-        {headers: header}
-      )
-      .subscribe((observer: any) => {
-        if (observer.status === 'success') {
-          this.favoriteService.changes.next('changed');
-          this.series = this.series.filter((el) => el.id !== event);
+          this.media.splice(index, 1);
+          this.media.length === 0 ? (this.empty = true) : (this.empty = false);
         }
       });
   }

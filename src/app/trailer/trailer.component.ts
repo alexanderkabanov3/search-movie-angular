@@ -1,8 +1,10 @@
-import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
-import {TrailerService} from '../services/trailer.service';
-import {MediaItem} from '../interfaces/fetchingResults';
+import {
+  TrailerObjInterface,
+  TrailerService,
+} from '../shared/services/trailer.service';
+import {Store} from '@ngrx/store';
+import {dataLeft, trailerLeaveAction} from '../shared/store/reducers/trailer';
 
 @Component({
   selector: 'app-trailer',
@@ -10,60 +12,16 @@ import {MediaItem} from '../interfaces/fetchingResults';
   styleUrls: ['./trailer.component.scss'],
 })
 export class TrailerComponent implements OnInit {
-  public title;
-  public date;
-  public path;
-  public trustedDashboardUrl;
-  public url = '';
-  public preLoader = true;
+  public trailerObj: TrailerObjInterface;
 
-  constructor(
-    private trailerService: TrailerService,
-    private httpItem: HttpClient,
-    private dom: DomSanitizer
-  ) {}
+  constructor(private trailerService: TrailerService, private store: Store) {}
 
   ngOnInit(): void {
-    if (this.trailerService.movieId !== '') {
-      this.fetchItem('movie', this.trailerService.movieId).then((data) => {
-        this.title = data.title;
-        this.date = data.release_date;
-        this.path = `https://www.youtube.com/embed/${data.videos.results[0].key}`;
-
-        this.trustedDashboardUrl = this.dom.bypassSecurityTrustResourceUrl(
-          this.path
-        );
-
-        this.url = this.trustedDashboardUrl;
-        this.preLoader = false;
-      });
-    } else {
-      this.fetchItem('tv', this.trailerService.seriesId).then((data) => {
-        this.title = data.name;
-        this.date = data.first_air_date;
-        this.path = `https://www.youtube.com/embed/${data.videos.results[0].key}`;
-
-        this.trustedDashboardUrl = this.dom.bypassSecurityTrustResourceUrl(
-          this.path
-        );
-
-        this.url = this.trustedDashboardUrl;
-        this.preLoader = false;
-      });
-    }
+    this.trailerObj = this.trailerService.trailerObj;
   }
 
   close(): void {
-    this.trailerService.open.next(false);
-    this.trailerService.movieId = '';
-    this.trailerService.seriesId = '';
-  }
-
-  async fetchItem(type, id): Promise<MediaItem> {
-    return await this.httpItem
-      .get<MediaItem>(
-        `https://api.themoviedb.org/3/${type}/${id}?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&append_to_response=videos`
-      )
-      .toPromise();
+    this.store.dispatch(trailerLeaveAction());
+    this.store.dispatch(dataLeft());
   }
 }

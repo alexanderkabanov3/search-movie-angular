@@ -14,12 +14,15 @@ import {SectionupcommingComponent} from './main/sectionupcomming/sectionupcommin
 import {SectiontopratedComponent} from './main/sectiontoprated/sectiontoprated.component';
 import {NgCircleProgressModule} from 'ng-circle-progress';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {PipesModule} from './pipes/pipes.module';
+import {PipesModule} from './shared/pipes/pipes.module';
 import {TrailerModule} from './trailer/trailer.module';
 import {FavoriteModule} from './header/favorite/favorite.module';
 import {LayoutModule} from '@angular/cdk/layout';
 import {LogInComponent} from './registration/log-in/log-in.component';
 import {SignUpComponent} from './registration/sign-up/sign-up.component';
+import {StoreModule} from '@ngrx/store';
+import {reducers} from './shared/store/reducers';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [
@@ -60,6 +63,8 @@ import {SignUpComponent} from './registration/sign-up/sign-up.component';
     TrailerModule,
     FavoriteModule,
     LayoutModule,
+    StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({maxAge: 25}),
   ],
   providers: [],
   bootstrap: [AppComponent],

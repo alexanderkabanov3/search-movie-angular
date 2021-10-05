@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {findValueService} from 'src/app/services/find-value.service';
+import {findValueService} from 'src/app/shared/services/find-value.service';
 
 @Component({
   selector: 'app-found',

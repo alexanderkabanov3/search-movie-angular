@@ -1,19 +1,20 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {findValueService} from 'src/app/services/find-value.service';
+import {findValueService} from 'src/app/shared/services/find-value.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-found-nav',
   templateUrl: './found-nav.component.html',
   styleUrls: ['./found-nav.component.scss'],
 })
-export class FoundNavComponent implements OnInit {
-  private route;
+export class FoundNavComponent implements OnInit, OnDestroy {
+  private routeSubscription: Subscription;
 
   constructor(public findService: findValueService, private router: Router) {}
 
   ngOnInit(): void {
-    this.route = this.router.events.subscribe((e: any) => {
+    this.routeSubscription = this.router.events.subscribe((e: any) => {
       if (e.url !== undefined) {
         if (e.url.match(/\bmovies\b/) !== null) {
           this.findService.movieFlag = true;
@@ -69,5 +70,9 @@ export class FoundNavComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 }

@@ -34,22 +34,24 @@
         </ng-template>
         <div class="overview__information">
           <p class="overview__title">
-            {{ item.title }} ({{ item.release_date | date: 'yyyy' }})
+            {{ item.title || item.name }} ({{
+              item.release_date || item.first_air_date | date: 'yyyy'
+            }})
           </p>
           <div class="overview__infoPg">
             <span class="overview__date">
-              {{ item.release_date | date }}
+              {{ item.release_date || item.first_air_date | date }}
             </span>
             <p class="overview__dot"></p>
             <p class="overview__genre">
               {{ genres }}
             </p>
-            <p class="overview__dot"></p>
-            <p class="overview__age">
+            <p *ngIf="ageAccess" class="overview__dot"></p>
+            <p *ngIf="ageAccess" class="overview__age">
               {{ ageAccess }}
             </p>
-            <p class="overview__dot"></p>
-            <p>{{ item.runtime | myTime }}</p>
+            <p class="overview__dot" *ngIf="item.runtime"></p>
+            <p *ngIf="item.runtime">{{ item.runtime | myTime }}</p>
           </div>
           <div class="overview__rait">
             <div class="overview__rait--left">
@@ -72,8 +74,8 @@
               </div>
               <p class="overview__raitText">movie rait</p>
             </div>
-            <div class="overview__rait--right">
-              <div class="overview__circlePlay" (click)="open(item.id)">
+            <div *ngIf="trailerExist" class="overview__rait--right">
+              <div class="overview__circlePlay" (click)="open()">
                 <div
                   class="overview__circlePlay--play"
                   name="caret-forward-outline"
@@ -88,12 +90,12 @@
           <button
             class="overview__button"
             [title]="
-              !this.favoriteService.btnExist
+              !(checkedIn$ | async)
                 ? 'please, register in order to add'
                 : 'add to favorite'
             "
-            (click)="addFavorite(item.id)"
-            [disabled]="!this.favoriteService.btnExist"
+            (click)="addFavorite(type, item.id)"
+            [disabled]="!(checkedIn$ | async)"
           >
             add to favorite
           </button>
@@ -143,8 +145,8 @@
             *ngFor="let element of similar"
             [routerLink]="
               element.title
-                ? ['/movieoverview', element.id]
-                : ['/seriesoverview', element.id]
+                ? ['/overview', 'movie', element.id]
+                : ['/overview', 'tv', element.id]
             "
             [@item]
           >
@@ -189,7 +191,7 @@
           <p class="comments__text">{{ comment.text }}</p>
           <button
             class="comments__delete"
-            *ngIf="comment.userName === currentUser"
+            *ngIf="comment.userName === (currentUser$ | async)"
             (click)="deleteComment(comment._id)"
           >
             delete comment
@@ -199,23 +201,23 @@
           <textarea
             [(ngModel)]="comment"
             [placeholder]="
-              this.favoriteService.btnExist
+              (checkedIn$ | async)
                 ? 'leave a comment'
                 : 'I am waiting for your registration :)'
             "
             class="comments__tap"
-            [disabled]="!this.favoriteService.btnExist"
+            [disabled]="!(checkedIn$ | async)"
             [title]="
-              !this.favoriteService.btnExist
+              !(checkedIn$ | async)
                 ? 'please, register in order to leave a comment'
                 : 'leave a comment'
             "
           ></textarea>
           <button
             class="comments__submit"
-            [disabled]="!this.favoriteService.btnExist || comment.length < 10"
+            [disabled]="!(checkedIn$ | async) || comment.length < 10"
             [title]="
-              !this.favoriteService.btnExist || comment.length < 10
+              !(checkedIn$ | async) || comment.length < 10
                 ? 'please, register or type at least 10 characters in order to leave a comment'
                 : 'leave a comment'
             "

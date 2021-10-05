@@ -10,17 +10,10 @@ const routes: Routes = [
       import('./main/found/found.module').then((m) => m.FoundModule),
   },
   {
-    path: 'movieoverview/:id',
+    path: 'overview/:type/:id',
     loadChildren: () =>
       import('./detail/detail-movie/detail-movie.module').then(
         (m) => m.DetailMovieModule
-      ),
-  },
-  {
-    path: 'seriesoverview/:id',
-    loadChildren: () =>
-      import('./detail/detail-series/detail-series.module').then(
-        (m) => m.DetailSeriesModule
       ),
   },
   {
@@ -33,23 +26,16 @@ const routes: Routes = [
   {
     path: 'people',
     loadChildren: () =>
-      import('./navigationContent/people/people.module').then(
+      import('./searchingByGenre/people/people.module').then(
         (m) => m.PeopleModule
       ),
   },
   {
-    path: 'movie',
+    path: 'media/:type/:description',
     loadChildren: () =>
-      import(
-        './navigationContent/movie-nav-content/movie-nav-content.module'
-      ).then((m) => m.MovieNavContentModule),
-  },
-  {
-    path: 'series',
-    loadChildren: () =>
-      import(
-        './navigationContent/series-nav-content/series-nav-content.module'
-      ).then((m) => m.SeriesNavContentModule),
+      import('./searchingByGenre/movies&serials/media-nav-content.module').then(
+        (m) => m.MediaNavContentModule
+      ),
   },
 ];
 

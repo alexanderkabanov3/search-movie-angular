@@ -2,7 +2,7 @@ import {animate, style, transition, trigger} from '@angular/animations';
 import {HttpClient} from '@angular/common/http';
 import {Component, OnInit} from '@angular/core';
 import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
-import {Results, MediaItem} from 'src/app/interfaces/fetchingResults';
+import {Results, MediaItem} from 'src/app/shared/interfaces/fetchingResults';
 
 @Component({
   selector: 'app-sectionpopular',
@@ -35,16 +35,19 @@ export class SectionpopularComponent implements OnInit {
 
   ngOnInit(): void {
     // fetching movie list
-    this.movieHttp.get(this.urlPopularMovies).subscribe((response: Results) => this.movArr = response.results);
+    this.movieHttp
+      .get<Results>(this.urlPopularMovies)
+      .subscribe((response: Results) => (this.movArr = response.results));
 
     // fetching series list
-    this.seriesHttp.get(this.urlPopularTv).subscribe((response: Results) => this.serArr = response.results);
+    this.seriesHttp
+      .get<Results>(this.urlPopularTv)
+      .subscribe((response: Results) => (this.serArr = response.results));
 
     this.mediaQueries();
   }
 
   switchBtn({event}: {event: any}): void {
-
     if (!event.target.classList.contains('popular__select')) {
       const childrenArr = event.target.parentNode.children;
       for (const element of childrenArr) {

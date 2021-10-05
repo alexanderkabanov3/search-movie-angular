@@ -10,7 +10,7 @@
       class="found__pageItemPerson"
       *ngFor="let index of quantityPages"
       [routerLink]="['/found', 'people', 'page', index + 1]"
-      [ngClass]="{'found__pagesPerson--active': index + 1 === pageMatch}"
+      [ngClass]="{'found__pagesPerson--active': index + 1 === 1}"
     >
       {{ index + 1 }}
     </div>

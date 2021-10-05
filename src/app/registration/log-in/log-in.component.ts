@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {FavoriteService} from 'src/app/services/favorite.service';
-import {UserDataService} from 'src/app/services/user-data.service';
+import {FavoriteService} from 'src/app/shared/services/favorite.service';
 import {HttpClient} from '@angular/common/http';
-import {RegistrationService} from '../../services/registration.service';
+import {Store} from '@ngrx/store';
+import {userEnterAction} from '../../shared/store/reducers/user';
+import {logInLeave} from '../../shared/store/reducers/authBlock';
 
 @Component({
   selector: 'app-log-in',
@@ -16,10 +17,9 @@ export class LogInComponent implements OnInit {
   public preLoader = false;
 
   constructor(
-    private userData: UserDataService,
     public favoriteService: FavoriteService,
     private loginHttp: HttpClient,
-    private registrationService: RegistrationService
+    private store: Store
   ) {}
 
   ngOnInit(): void {
@@ -42,16 +42,14 @@ export class LogInComponent implements OnInit {
       )
       .subscribe(
         (observer: any) => {
-          this.userData.userName.next(this.form.value.name);
-          localStorage.setItem('userName', this.form.value.name);
-          localStorage.setItem('token', observer.token);
-          this.registrationService.logInBtn = false;
-          this.favoriteService.btnExist = true;
-
-          window.localStorage.setItem(
-            'btnExist',
-            JSON.stringify(this.favoriteService.btnExist)
+          this.store.dispatch(
+            userEnterAction({username: this.form.value.name})
           );
+
+          localStorage.setItem('userName', this.form.value.name);
+          localStorage.setItem('loggedIn', JSON.stringify(true));
+          localStorage.setItem('token', observer.token);
+          this.store.dispatch(logInLeave());
         },
         (error) => {
           this.errorMessage = error.error.message;
