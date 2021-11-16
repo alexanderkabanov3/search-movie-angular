@@ -1,6 +1,6 @@
 <section
   class="search"
-  [ngStyle]="{'background-image': 'url(' + bgImgPath + ')'}"
+  [ngStyle]="{'background-image': 'url(' + (bgImgPath$ | async) + ')'}"
   [@item]
 >
   <h1 class="search__heading animate__animated animate__bounceInRight">

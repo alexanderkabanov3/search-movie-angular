@@ -1,7 +1,7 @@
 <section
   class="upcoming"
   id="upcoming"
-  [ngStyle]="{'background-image': 'url(' + bgImgPath + ')'}"
+  [ngStyle]="{'background-image': 'url(' + (bgImgPath$ | async) + ')'}"
 >
   <div class="container upcoming__container">
     <h2 class="headingh2 headingh2--up">upcoming</h2>

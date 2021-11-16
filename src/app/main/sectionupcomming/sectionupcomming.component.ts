@@ -11,6 +11,7 @@ import {
   trailerStream,
 } from '../../shared/store/reducers/trailer';
 import {TrailerService} from '../../shared/services/trailer.service';
+import {BackgroundImagesService} from 'src/app/shared/services/background-images.service';
 
 @Component({
   selector: 'app-sectionupcomming',
@@ -23,12 +24,10 @@ import {TrailerService} from '../../shared/services/trailer.service';
   ],
 })
 export class SectionupcommingComponent implements OnInit, OnDestroy {
-  public bgImgPath: string;
+  public bgImgPath$ = this.bgImgService.sectionUpcomingImg$;
   public trailerArr: MediaItem[] = [];
   private urlTrailers =
     'https://api.themoviedb.org/3/movie/upcoming?api_key=f4a143e6e64636aa4b0cd6bec7236ad4';
-  private movieUrl =
-    'https://api.themoviedb.org/3/movie/popular?api_key=f4a143e6e64636aa4b0cd6bec7236ad4&page=1';
   public modal = false;
   private trailerStream$ = this.store.select(trailerStream);
   private dataReceived$ = this.store.select(dataReceivedStream);
@@ -36,23 +35,20 @@ export class SectionupcommingComponent implements OnInit, OnDestroy {
   private dataReceivedSubscription$: Subscription;
 
   constructor(
-    private bgHttp: HttpClient,
     private trailerHttp: HttpClient,
     private posterHttp: HttpClient,
     private store: Store,
-    private trailerService: TrailerService
+    private trailerService: TrailerService,
+    private bgImgService: BackgroundImagesService
   ) {}
 
   ngOnInit(): void {
     this.trailerSubscription$ = this.trailerStream$.subscribe((trailer) => {
       this.modal = trailer.open;
     });
-    // fetching background image
-    this.bgHttp.get<Results>(this.movieUrl).subscribe((response: Results) => {
-      this.bgImgPath = `https://image.tmdb.org/t/p/original${
-        response.results[this.randomInteger()].backdrop_path
-      }`;
-    });
+
+    this.bgImgService.findSectionUpcomingBgImg();
+
     // fetching upcoming list
 
     this.trailerHttp
@@ -81,11 +77,6 @@ export class SectionupcommingComponent implements OnInit, OnDestroy {
         this.dataReceivedSubscription$.unsubscribe();
       }
     });
-  }
-
-  randomInteger(): number {
-    const rand = 0 - 0.5 + Math.random() * (19 + 1);
-    return Math.round(rand);
   }
 
   ngOnDestroy(): void {
